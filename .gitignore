@@ -10,3 +10,8 @@ __pycache__/
 venv/
 **/venv/
 .DS_Store
+
+# Large binary files
+AudreyBook/prototypes/
+AudreyBook/*.m4a
+"Babble Book Version Two/uploads/"
