@@ -1,0 +1,895 @@
+<!--
+  ╔══════════════════════════════════════════════════════════╗
+  ║  Babel Books — Upload Page                              ║
+  ║  Mimics SoundCloud upload UI structure.                 ║
+  ║  Color scheme: white + soft indigo. Elegant & bright.   ║
+  ║                                                         ║
+  ║  Paste into a Squarespace Code Block (Business plan+)  ║
+  ║  CONFIG: update SERVER at the bottom of this file.      ║
+  ╚══════════════════════════════════════════════════════════╝
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<div id="bbu">
+
+  <!-- ══ Top Bar ════════════════════════════════════════════ -->
+  <div class="bbu-bar">
+
+    <div class="bbu-brand">
+      <!-- Book + sound-wave mark -->
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" class="bbu-logo-svg">
+        <rect width="32" height="32" rx="9" fill="#6366F1"/>
+        <!-- open book shape -->
+        <path d="M8 22V11C8 11 12 10 16 12C20 10 24 11 24 11V22C24 22 20 21 16 23C12 21 8 22 8 22Z"
+              fill="none" stroke="white" stroke-width="1.6" stroke-linejoin="round"/>
+        <line x1="16" y1="12" x2="16" y2="23" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span class="bbu-brand-name">Babel Books</span>
+      <span class="bbu-divider" aria-hidden="true">|</span>
+      <span class="bbu-bar-label">Upload</span>
+    </div>
+
+    <!-- Usage meter -->
+    <div class="bbu-meter">
+      <span class="bbu-meter-pct" id="bbu-pct">0%</span>
+      <span class="bbu-meter-of">of uploads used</span>
+      <div class="bbu-meter-track">
+        <div class="bbu-meter-fill" id="bbu-meter-fill" style="width:0%"></div>
+      </div>
+      <span class="bbu-meter-count">0 of 20 books</span>
+    </div>
+
+    <div class="bbu-bar-actions">
+      <button class="bbu-bar-cta" type="button">Get unlimited uploads</button>
+      <button class="bbu-bar-close" id="bbu-close" type="button" aria-label="Close">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+  </div><!-- .bbu-bar -->
+
+  <!-- ══ Main ══════════════════════════════════════════════ -->
+  <div class="bbu-main">
+
+    <h1 class="bbu-heading">Upload your audio story.</h1>
+    <p class="bbu-sub">For best quality, record in a quiet space. Supports M4A, MP3, WAV, and AAC. Maximum file size is 200&thinsp;MB.</p>
+
+    <!-- Drop zone -->
+    <div class="bbu-drop" id="bbu-drop" role="button" tabindex="0"
+         aria-label="Drag and drop audio, or click to browse">
+      <input type="file" id="bbu-input" accept="audio/*,.mp3,.m4a,.wav,.aac,.flac" hidden>
+
+      <!-- Idle -->
+      <div id="bbu-idle">
+        <!-- Cloud-up icon -->
+        <svg class="bbu-cloud-svg" width="80" height="68" viewBox="0 0 80 68" fill="none">
+          <path d="M57 44H53.5M16 44H12C9.24 44 7 41.76 7 39V37.2
+                   C7 31.12 11.92 26.2 18 26.2C18.4 26.2 18.8 26.22 19.18 26.26
+                   C21.12 19.9 26.98 15.4 34 15.4C43.39 15.4 51 23.01 51 32.4
+                   C51 32.52 51 32.65 50.99 32.77
+                   C54.06 33.54 56.2 36.32 56.2 39.6
+                   C56.2 42.99 53.82 45.82 50.6 46.52"
+            stroke="#6366F1" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="31" y1="55" x2="31" y2="37" stroke="#6366F1" stroke-width="2.5" stroke-linecap="round"/>
+          <polyline points="24,43 31,36 38,43" fill="none" stroke="#6366F1" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p class="bbu-drop-text">Drag and drop your audio story to get started.</p>
+        <button class="bbu-choose" id="bbu-choose" type="button">Choose files</button>
+      </div>
+
+      <!-- File selected -->
+      <div id="bbu-selected" hidden class="bbu-selected-wrap">
+        <div class="bbu-sel-icon">
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+            <rect width="38" height="38" rx="11" fill="#EEF2FF"/>
+            <!-- waveform bars -->
+            <rect x="7"  y="14" width="3" height="10" rx="1.5" fill="#6366F1"/>
+            <rect x="12" y="11" width="3" height="16" rx="1.5" fill="#6366F1"/>
+            <rect x="17" y="13" width="3" height="12" rx="1.5" fill="#6366F1"/>
+            <rect x="22" y="9"  width="3" height="20" rx="1.5" fill="#6366F1"/>
+            <rect x="27" y="13" width="3" height="12" rx="1.5" fill="#6366F1"/>
+          </svg>
+        </div>
+        <div class="bbu-sel-meta">
+          <span class="bbu-sel-name" id="bbu-fname"></span>
+          <span class="bbu-sel-size" id="bbu-fsize"></span>
+        </div>
+        <button class="bbu-sel-remove" id="bbu-remove" type="button" aria-label="Remove file">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M1.5 1.5L12.5 12.5M12.5 1.5L1.5 12.5" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+    </div><!-- .bbu-drop -->
+
+    <!-- Upload button row -->
+    <div class="bbu-upload-row" id="bbu-upload-row" hidden>
+      <button class="bbu-upload-btn" id="bbu-upload" type="button">
+        <span id="bbu-btn-text">Upload story</span>
+        <span id="bbu-btn-spin" class="bbu-spin-wrap" hidden>
+          <svg class="bbu-spinning" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="5.5" stroke="rgba(255,255,255,.3)" stroke-width="2"/>
+            <path d="M8 2.5A5.5 5.5 0 0 1 13.5 8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+
+    <!-- Pipeline progress -->
+    <div class="bbu-pipeline" id="bbu-pipeline" hidden>
+      <div class="bbu-pipe-header">
+        <span class="bbu-pipe-label">Building your book…</span>
+        <span class="bbu-pipe-pct" id="bbu-pipe-pct">0%</span>
+      </div>
+      <div class="bbu-pipe-track">
+        <div class="bbu-pipe-fill" id="bbu-pipe-fill" style="width:0%"></div>
+      </div>
+      <div class="bbu-pipe-steps" id="bbu-pipe-steps"></div>
+    </div>
+
+    <!-- Success -->
+    <div class="bbu-success" id="bbu-success" hidden>
+      <div class="bbu-success-inner">
+        <div class="bbu-success-check">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M4 10.5L8 14.5L16 7" stroke="white" stroke-width="2.2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <p class="bbu-success-title">Book created successfully!</p>
+          <p class="bbu-success-desc">Your story has been processed. Your illustrated book is ready.</p>
+          <code class="bbu-success-id" id="bbu-run-id"></code>
+        </div>
+      </div>
+      <button class="bbu-again" id="bbu-again" type="button">Upload another story</button>
+    </div>
+
+    <!-- Error -->
+    <div class="bbu-error" id="bbu-error" hidden>
+      <svg width="17" height="17" viewBox="0 0 17 17" fill="none" class="bbu-error-icon">
+        <circle cx="8.5" cy="8.5" r="7.5" stroke="#EF4444" stroke-width="1.5"/>
+        <path d="M8.5 5V10M8.5 12V12.5" stroke="#EF4444" stroke-width="1.75" stroke-linecap="round"/>
+      </svg>
+      <p class="bbu-error-msg" id="bbu-error-msg">Something went wrong. Please try again.</p>
+      <button class="bbu-retry" id="bbu-retry" type="button">Try again</button>
+    </div>
+
+    <!-- Microphone section -->
+    <div class="bbu-mic">
+      <button class="bbu-mic-row" id="bbu-mic-toggle" type="button" aria-expanded="false">
+        <div class="bbu-mic-left">
+          <span class="bbu-mic-icon-wrap">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="5.5" y="1.5" width="7" height="10" rx="3.5"
+                    stroke="currentColor" stroke-width="1.5"/>
+              <path d="M2.5 9C2.5 12.59 5.41 15.5 9 15.5M15.5 9C15.5 12.59 12.59 15.5 9 15.5M9 15.5V17.5"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="bbu-mic-text">Or record with a microphone</span>
+        </div>
+        <svg class="bbu-chevron" id="bbu-chevron" width="17" height="17" viewBox="0 0 17 17" fill="none">
+          <path d="M4 6.5L8.5 11L13 6.5" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="bbu-mic-body" id="bbu-mic-body" hidden>
+        <p>Already have a voice memo from your phone? Upload it directly and we&rsquo;ll transform it into a beautifully illustrated 15-page children&rsquo;s book&nbsp;— automatically.</p>
+      </div>
+    </div>
+
+  </div><!-- .bbu-main -->
+</div><!-- #bbu -->
+
+
+<!-- ─── Styles ─────────────────────────────────────────────── -->
+<style>
+/* ── Reset ──────────────────────────────────────────────────── */
+#bbu, #bbu *, #bbu *::before, #bbu *::after {
+  box-sizing: border-box;
+  margin: 0; padding: 0; border: none; outline: none;
+  -webkit-font-smoothing: antialiased;
+}
+#bbu button { background: none; cursor: pointer; font-family: inherit; }
+
+/* ── Root ────────────────────────────────────────────────────── */
+#bbu {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  color: #111827;
+}
+
+/* ══ Top Bar ════════════════════════════════════════════════════ */
+.bbu-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 26px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #F3F4F6;
+  flex-wrap: wrap;
+}
+
+/* Brand */
+.bbu-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.bbu-logo-svg { display: block; flex-shrink: 0; }
+.bbu-brand-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.3px;
+}
+.bbu-divider {
+  color: #D1D5DB;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 1;
+}
+.bbu-bar-label {
+  font-size: 14px;
+  font-weight: 400;
+  color: #6B7280;
+}
+
+/* Usage meter */
+.bbu-meter {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 1;
+  min-width: 0;
+  max-width: 320px;
+}
+.bbu-meter-pct {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+}
+.bbu-meter-of {
+  font-size: 12px;
+  color: #9CA3AF;
+  white-space: nowrap;
+}
+.bbu-meter-track {
+  flex: 1;
+  height: 3px;
+  background: #F3F4F6;
+  border-radius: 99px;
+  overflow: hidden;
+  min-width: 60px;
+}
+.bbu-meter-fill {
+  height: 100%;
+  background: #6366F1;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+.bbu-meter-count {
+  font-size: 12px;
+  color: #9CA3AF;
+  white-space: nowrap;
+}
+
+/* Bar actions */
+.bbu-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.bbu-bar-cta {
+  background: #6366F1;
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 6px;
+  letter-spacing: 0.01em;
+  transition: background 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+.bbu-bar-cta:hover  { background: #4F46E5; }
+.bbu-bar-cta:active { transform: scale(0.97); }
+.bbu-bar-close {
+  color: #9CA3AF;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+.bbu-bar-close:hover { background: #F3F4F6; color: #374151; }
+
+/* ══ Main ════════════════════════════════════════════════════════ */
+.bbu-main { padding: 40px 44px 52px; }
+
+.bbu-heading {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.bbu-sub {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #6B7280;
+  margin-bottom: 26px;
+  max-width: 540px;
+}
+
+/* ── Drop Zone ──────────────────────────────────────────────── */
+.bbu-drop {
+  width: 100%;
+  min-height: 250px;
+  background: #FAFAFA;
+  border: 1.5px dashed #D1D5DB;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  padding: 44px 24px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.bbu-drop:hover,
+.bbu-drop:focus,
+.bbu-drop.bbu-dragover {
+  border-color: #6366F1;
+  background: #F5F3FF;
+}
+
+#bbu-idle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+.bbu-cloud-svg { display: block; margin-bottom: 4px; }
+.bbu-drop-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: #374151;
+  line-height: 1.45;
+  margin-bottom: 4px;
+}
+.bbu-choose {
+  margin-top: 6px;
+  padding: 9px 26px;
+  border: 1.5px solid #6366F1;
+  border-radius: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #6366F1;
+  background: transparent;
+  letter-spacing: 0.01em;
+  pointer-events: all;
+  transition: background 0.18s, color 0.18s;
+}
+.bbu-choose:hover { background: #6366F1; color: #FFFFFF; }
+
+/* Selected inner */
+.bbu-selected-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 16px 18px;
+  width: 100%;
+  max-width: 480px;
+  pointer-events: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+.bbu-sel-icon   { flex-shrink: 0; }
+.bbu-sel-meta {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; gap: 3px;
+  text-align: left;
+}
+.bbu-sel-name {
+  font-size: 13.5px; font-weight: 500; color: #111827;
+  display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.bbu-sel-size { font-size: 12px; color: #9CA3AF; }
+.bbu-sel-remove {
+  pointer-events: all; color: #9CA3AF;
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: color 0.15s, background 0.15s;
+}
+.bbu-sel-remove:hover { color: #EF4444; background: #FEF2F2; }
+
+/* ── Upload button row ──────────────────────────────────────── */
+.bbu-upload-row {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+.bbu-upload-btn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 30px;
+  background: #6366F1;
+  color: #FFFFFF;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: background 0.18s, transform 0.1s;
+}
+.bbu-upload-btn:hover   { background: #4F46E5; }
+.bbu-upload-btn:active  { transform: scale(0.97); }
+.bbu-upload-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.bbu-spin-wrap { display: flex; }
+@keyframes bbu-spin { to { transform: rotate(360deg); } }
+.bbu-spinning { animation: bbu-spin 0.75s linear infinite; }
+
+/* ── Pipeline ───────────────────────────────────────────────── */
+.bbu-pipeline {
+  margin-top: 22px;
+  background: #FAFAFA;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 20px 22px;
+}
+.bbu-pipe-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.bbu-pipe-label { font-size: 13px; font-weight: 500; color: #374151; }
+.bbu-pipe-pct   { font-size: 12px; font-weight: 600; color: #6B7280; }
+.bbu-pipe-track {
+  height: 5px;
+  background: #E5E7EB;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.bbu-pipe-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6366F1, #818CF8);
+  border-radius: 99px;
+  transition: width 0.55s cubic-bezier(.4,0,.2,1);
+}
+.bbu-pipe-steps { display: flex; flex-direction: column; gap: 2px; }
+.bbu-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  transition: background 0.15s;
+}
+.bbu-step-dot {
+  width: 16px; height: 16px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+/* pending */
+.bbu-step.pending { color: #9CA3AF; }
+.bbu-step.pending .bbu-step-dot::after {
+  content: '';
+  display: block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #D1D5DB;
+}
+/* active */
+.bbu-step.active { background: #F5F3FF; color: #4338CA; }
+.bbu-step.active .bbu-step-dot::after {
+  content: '';
+  display: block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #6366F1;
+  animation: bbu-pulse 1s ease-in-out infinite;
+}
+@keyframes bbu-pulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+/* done */
+.bbu-step.done { color: #374151; }
+.bbu-step.done .bbu-step-dot { color: #10B981; }
+.bbu-step.done .bbu-step-dot::before {
+  content: '';
+  display: block;
+  width: 7px; height: 4.5px;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+/* ── Success ─────────────────────────────────────────────────── */
+.bbu-success {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 22px;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 10px;
+  flex-wrap: wrap;
+}
+.bbu-success-inner { display: flex; align-items: flex-start; gap: 14px; }
+.bbu-success-check {
+  width: 32px; height: 32px;
+  background: #10B981;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.bbu-success-title { font-size: 14px; font-weight: 600; color: #064E3B; margin-bottom: 3px; }
+.bbu-success-desc  { font-size: 13px; color: #065F46; margin-bottom: 7px; line-height: 1.5; }
+.bbu-success-id {
+  font-size: 10.5px;
+  font-family: 'SF Mono','Fira Code','Courier New',monospace;
+  color: #047857;
+  background: #D1FAE5;
+  padding: 3px 9px;
+  border-radius: 4px;
+}
+.bbu-again {
+  padding: 8px 18px;
+  border: 1.5px solid #6EE7B7;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #047857;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.bbu-again:hover { background: #D1FAE5; }
+
+/* ── Error ───────────────────────────────────────────────────── */
+.bbu-error {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 10px;
+  flex-wrap: wrap;
+}
+.bbu-error-icon { flex-shrink: 0; }
+.bbu-error-msg  { flex: 1; font-size: 13px; color: #991B1B; line-height: 1.5; }
+.bbu-retry {
+  padding: 7px 15px;
+  border: 1px solid #FECACA;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #B91C1C;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.bbu-retry:hover { background: #FEE2E2; }
+
+/* ── Mic section ─────────────────────────────────────────────── */
+.bbu-mic {
+  margin-top: 14px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #FFFFFF;
+}
+.bbu-mic-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 20px;
+  gap: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.bbu-mic-row:hover { background: #F9FAFB; }
+.bbu-mic-left { display: flex; align-items: center; gap: 12px; }
+.bbu-mic-icon-wrap {
+  width: 32px; height: 32px;
+  background: #EEF2FF;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  color: #6366F1;
+}
+.bbu-mic-text { font-size: 14px; font-weight: 500; color: #111827; }
+.bbu-chevron {
+  color: #9CA3AF;
+  flex-shrink: 0;
+  transition: transform 0.22s ease;
+}
+.bbu-chevron.open { transform: rotate(180deg); }
+.bbu-mic-body {
+  padding: 14px 20px 18px 64px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #6B7280;
+  border-top: 1px solid #F3F4F6;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 620px) {
+  .bbu-bar    { padding: 13px 18px; gap: 12px; }
+  .bbu-meter  { display: none; }
+  .bbu-main   { padding: 28px 20px 36px; }
+  .bbu-heading { font-size: 21px; }
+  .bbu-drop   { min-height: 200px; padding: 32px 20px; }
+  .bbu-upload-row { justify-content: stretch; }
+  .bbu-upload-btn { width: 100%; justify-content: center; }
+  .bbu-success { flex-direction: column; }
+  .bbu-mic-body { padding-left: 20px; }
+}
+</style>
+
+
+<!-- ─── Script ───────────────────────────────────────────────── -->
+<script>
+(function () {
+
+  // ══════════════════════════════════════
+  //  CONFIG — update to your server URL
+  // ══════════════════════════════════════
+  var SERVER = 'http://localhost:3001';
+
+  var STEPS = [
+    { key: 'intake_job',         label: 'Saving audio file'           },
+    { key: 'preprocess_audio',   label: 'Preparing audio'             },
+    { key: 'asr_transcribe',     label: 'Transcribing story'          },
+    { key: 'transcript_cleaner', label: 'Cleaning transcript'         },
+    { key: 'storywriter',        label: 'Writing your story'          },
+    { key: 'style_bible',        label: 'Defining illustration style' },
+    { key: 'prompt_writer',      label: 'Designing illustrations'     },
+    { key: 'image_generator',    label: 'Generating illustrations'    },
+    { key: 'image_qc',           label: 'Checking illustrations'      },
+    { key: 'layout_engine',      label: 'Planning page layout'        },
+    { key: 'pdf_builder',        label: 'Building your PDF'           },
+    { key: 'final_qc',           label: 'Final quality check'         },
+  ];
+
+  function $$(id) { return document.getElementById(id); }
+
+  var drop       = $$('bbu-drop');
+  var input      = $$('bbu-input');
+  var choose     = $$('bbu-choose');
+  var idleEl     = $$('bbu-idle');
+  var selectedEl = $$('bbu-selected');
+  var fnameEl    = $$('bbu-fname');
+  var fsizeEl    = $$('bbu-fsize');
+  var removeEl   = $$('bbu-remove');
+  var uploadRow  = $$('bbu-upload-row');
+  var uploadBtn  = $$('bbu-upload');
+  var btnText    = $$('bbu-btn-text');
+  var btnSpin    = $$('bbu-btn-spin');
+  var pipeline   = $$('bbu-pipeline');
+  var pipeFill   = $$('bbu-pipe-fill');
+  var pipePct    = $$('bbu-pipe-pct');
+  var pipeSteps  = $$('bbu-pipe-steps');
+  var successEl  = $$('bbu-success');
+  var runIdEl    = $$('bbu-run-id');
+  var againEl    = $$('bbu-again');
+  var errorEl    = $$('bbu-error');
+  var errorMsg   = $$('bbu-error-msg');
+  var retryEl    = $$('bbu-retry');
+  var micToggle  = $$('bbu-mic-toggle');
+  var micBody    = $$('bbu-mic-body');
+  var chevron    = $$('bbu-chevron');
+  var closeBtn   = $$('bbu-close');
+
+  var file = null;
+  var poll = null;
+
+  function show(el) { el.hidden = false; }
+  function hide(el) { el.hidden = true; }
+
+  function fmt(bytes) {
+    return bytes < 1048576
+      ? (bytes / 1024).toFixed(1) + ' KB'
+      : (bytes / 1048576).toFixed(1) + ' MB';
+  }
+
+  function setProgress(pct) {
+    pipeFill.style.width = pct + '%';
+    pipePct.textContent  = Math.round(pct) + '%';
+  }
+
+  function renderSteps(done, active) {
+    pipeSteps.innerHTML = '';
+    STEPS.forEach(function (s) {
+      var isDone   = done.indexOf(s.key) !== -1;
+      var isActive = !isDone && s.key === active;
+      var cls      = isDone ? 'done' : isActive ? 'active' : 'pending';
+      var el       = document.createElement('div');
+      el.className = 'bbu-step ' + cls;
+      el.innerHTML = '<span class="bbu-step-dot"></span><span>' + s.label + '</span>';
+      pipeSteps.appendChild(el);
+    });
+  }
+
+  function pick(f) {
+    if (!f) return;
+    var audioRx = /\.(mp3|m4a|wav|ogg|aac|flac|wma|opus)$/i;
+    if (!/^audio\//i.test(f.type) && !audioRx.test(f.name)) {
+      showErr('Please upload an audio file (MP3, M4A, WAV, AAC, OGG…).');
+      return;
+    }
+    if (f.size > 200 * 1048576) {
+      showErr('File is too large. Maximum size is 200 MB.');
+      return;
+    }
+    file = f;
+    fnameEl.textContent = f.name;
+    fsizeEl.textContent = fmt(f.size);
+    hide(idleEl);
+    show(selectedEl);
+    show(uploadRow);
+    hide(errorEl);
+    hide(successEl);
+    hide(pipeline);
+  }
+
+  function clearFile() {
+    file = null;
+    input.value = '';
+    show(idleEl);
+    hide(selectedEl);
+    hide(uploadRow);
+  }
+
+  function showErr(msg) {
+    errorMsg.textContent = msg;
+    show(errorEl);
+  }
+
+  function reset() {
+    if (poll) { clearInterval(poll); poll = null; }
+    clearFile();
+    hide(pipeline);
+    hide(successEl);
+    hide(errorEl);
+    btnText.textContent = 'Upload story';
+    hide(btnSpin);
+    uploadBtn.disabled = false;
+    setProgress(0);
+    pipeSteps.innerHTML = '';
+  }
+
+  // Drag-and-drop
+  drop.addEventListener('click', function (e) {
+    if (e.target !== choose) input.click();
+  });
+  drop.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); }
+  });
+  choose.addEventListener('click', function (e) {
+    e.stopPropagation(); input.click();
+  });
+  input.addEventListener('change', function () {
+    if (input.files && input.files[0]) pick(input.files[0]);
+  });
+  drop.addEventListener('dragover', function (e) {
+    e.preventDefault(); drop.classList.add('bbu-dragover');
+  });
+  drop.addEventListener('dragleave', function (e) {
+    if (!drop.contains(e.relatedTarget)) drop.classList.remove('bbu-dragover');
+  });
+  drop.addEventListener('drop', function (e) {
+    e.preventDefault(); drop.classList.remove('bbu-dragover');
+    var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) pick(f);
+  });
+
+  removeEl.addEventListener('click', function (e) { e.stopPropagation(); clearFile(); });
+  againEl.addEventListener('click', reset);
+  retryEl.addEventListener('click', reset);
+  if (closeBtn) closeBtn.addEventListener('click', reset);
+
+  micToggle.addEventListener('click', function () {
+    var open = !micBody.hidden;
+    micBody.hidden = open;
+    chevron.classList.toggle('open', !open);
+    micToggle.setAttribute('aria-expanded', String(!open));
+  });
+
+  uploadBtn.addEventListener('click', function () {
+    if (!file) return;
+
+    uploadBtn.disabled = true;
+    btnText.textContent = 'Uploading…';
+    show(btnSpin);
+    hide(errorEl);
+    show(pipeline);
+    setProgress(0);
+    renderSteps([], null);
+
+    var fd = new FormData();
+    fd.append('audio', file);
+
+    fetch(SERVER + '/upload', { method: 'POST', body: fd })
+      .then(function (r) {
+        if (!r.ok) return r.json().then(function (d) { throw new Error(d.error || 'Server error ' + r.status); });
+        return r.json();
+      })
+      .then(function (data) {
+        var uid = data.upload_id;
+        btnText.textContent = 'Processing…';
+        setProgress(4);
+
+        poll = setInterval(function () {
+          fetch(SERVER + '/status/' + uid)
+            .then(function (r) { return r.json(); })
+            .then(function (s) {
+              var done = s.steps_done || [];
+              var pct  = Math.max(4, Math.round((done.length / STEPS.length) * 100));
+              setProgress(pct);
+              renderSteps(done, s.step || null);
+
+              if (s.status === 'complete') {
+                clearInterval(poll); poll = null;
+                setProgress(100);
+                renderSteps(STEPS.map(function (x) { return x.key; }), null);
+                hide(btnSpin);
+                btnText.textContent = 'Done!';
+                runIdEl.textContent = s.run_id ? 'Run: ' + s.run_id : '';
+                show(successEl);
+              } else if (s.status === 'error') {
+                clearInterval(poll); poll = null;
+                hide(btnSpin);
+                uploadBtn.disabled = false;
+                btnText.textContent = 'Upload story';
+                showErr(s.error || 'Processing failed. Please try again.');
+              }
+            })
+            .catch(function () { /* network blip — keep polling */ });
+        }, 1500);
+      })
+      .catch(function (err) {
+        hide(btnSpin);
+        uploadBtn.disabled = false;
+        btnText.textContent = 'Upload story';
+        showErr(
+          (err.message || '').includes('fetch') || (err.message || '').includes('Failed')
+            ? 'Could not reach the Babel Books server. Is it running? (npm run serve)'
+            : err.message || 'Upload failed. Please try again.'
+        );
+      });
+  });
+
+})();
+</script>

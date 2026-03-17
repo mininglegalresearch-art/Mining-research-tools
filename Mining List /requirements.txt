@@ -1,0 +1,20 @@
+# Mining Company Research — Python Dependencies
+
+# HTTP and HTML parsing
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+
+# Financial data (free, no API key required)
+yfinance>=0.2.40
+pandas>=2.0.0
+
+# Google APIs (Sheets output)
+google-api-python-client>=2.100.0
+google-auth-httplib2>=0.1.1
+google-auth-oauthlib>=1.1.0
+
+# Environment variable management
+python-dotenv>=1.0.0
+
+# Install with: pip install -r requirements.txt

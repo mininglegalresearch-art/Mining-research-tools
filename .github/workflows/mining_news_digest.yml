@@ -1,0 +1,35 @@
+name: Mining News Digest
+
+on:
+  schedule:
+    # Every Monday at 8:00 AM UTC (adjust timezone offset if needed)
+    - cron: "0 8 * * 1"
+  workflow_dispatch:  # Also allows manual "Run workflow" button on GitHub
+
+jobs:
+  run-digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r "Mining News Scrapper/requirements.txt"
+
+      - name: Write .env from secrets
+        run: |
+          cat <<EOF > .env
+          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+          GMAIL_ADDRESS=${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD=${{ secrets.GMAIL_APP_PASSWORD }}
+          NEWS_RECIPIENT_EMAIL=${{ secrets.NEWS_RECIPIENT_EMAIL }}
+          EOF
+
+      - name: Run pipeline
+        run: python "Mining News Scrapper/tools/run_news_pipeline.py"

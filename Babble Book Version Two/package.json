@@ -1,0 +1,23 @@
+{
+  "name": "babel-books",
+  "version": "0.1.0",
+  "description": "Audio-to-children's-book workflow engine",
+  "type": "module",
+  "scripts": {
+    "babelbooks": "node --loader ts-node/esm src/cli.ts",
+    "demo": "npm run babelbooks -- demo",
+    "serve": "node --loader ts-node/esm src/server.ts",
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "busboy": "^1.6.0",
+    "commander": "^12.0.0",
+    "pdf-lib": "^1.17.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
+  }
+}

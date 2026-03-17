@@ -1,0 +1,30 @@
+# Audio-to-Storybook Pipeline — Python Dependencies
+
+# Environment variable management
+python-dotenv>=1.0.0
+
+# OpenAI SDK — Whisper transcription (Step 1) + GPT-4o (Steps 2, 3)
+openai>=1.30.0
+
+# Stable Diffusion image generation (Step 4)
+# NOTE: torch installation is platform-specific:
+#   Apple Silicon (MPS): pip install torch  (standard pip includes MPS support)
+#   CUDA (NVIDIA GPU):   pip install torch --index-url https://download.pytorch.org/whl/cu121
+#   CPU only:            pip install torch  (slow — 5-20 min per image)
+torch>=2.2.0
+diffusers>=0.27.0
+transformers>=4.40.0
+accelerate>=0.29.0
+
+# Image handling (required by diffusers output + reportlab)
+Pillow>=10.0.0
+
+# PDF generation (Step 5)
+reportlab>=4.0.0
+
+# Google Drive upload (Step 9 — upload_to_lulu.py)
+google-api-python-client>=2.100.0
+google-auth-httplib2>=0.2.0
+google-auth-oauthlib>=1.1.0
+
+# Install with: pip install -r AudreyBook/requirements.txt

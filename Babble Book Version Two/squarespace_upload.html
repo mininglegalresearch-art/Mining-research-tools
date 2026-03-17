@@ -1,0 +1,785 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  Babel Books — Audio Upload Widget                          ║
+  ║  Paste the entire contents of this file into a             ║
+  ║  Squarespace Code Block (requires Business plan or higher). ║
+  ║                                                            ║
+  ║  SETUP: Change the SERVER_URL constant below to match      ║
+  ║  the address where your Babel Books server is running.     ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<!-- ─── Widget root ──────────────────────────────────────────── -->
+<div id="bb-root">
+  <div class="bb-card" id="bb-card">
+
+    <!-- Header -->
+    <div class="bb-header">
+      <div class="bb-logo">
+        <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="42" height="42" rx="13" fill="#1C1917"/>
+          <rect x="9"  y="16" width="3" height="10" rx="1.5" fill="white"/>
+          <rect x="14" y="11" width="3" height="20" rx="1.5" fill="white"/>
+          <rect x="19" y="15" width="3" height="12" rx="1.5" fill="white"/>
+          <rect x="24" y="9"  width="3" height="24" rx="1.5" fill="white"/>
+          <rect x="29" y="14" width="3" height="14" rx="1.5" fill="white"/>
+        </svg>
+      </div>
+      <div class="bb-header-text">
+        <h2 class="bb-title">Upload Your Story</h2>
+        <p class="bb-subtitle">Record your child telling a story, upload the audio below, and we'll turn it into a beautiful illustrated children's book.</p>
+      </div>
+    </div>
+
+    <div class="bb-rule"></div>
+
+    <!-- ── Drop Zone (visible when no file is selected) ── -->
+    <div class="bb-dropzone" id="bb-dropzone" role="button" tabindex="0" aria-label="Drop audio file or click to browse">
+      <input type="file" id="bb-input" accept="audio/*,.mp3,.m4a,.wav,.ogg,.aac,.flac" hidden aria-hidden="true">
+      <div class="bb-dz-body">
+        <div class="bb-dz-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M14 3V20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M7 10L14 3L21 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 22C3 22 3 25 14 25C25 25 25 22 25 22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <p class="bb-dz-primary">Drop your audio file here</p>
+        <p class="bb-dz-secondary">or <button class="bb-link-btn" id="bb-browse" type="button">browse files</button></p>
+        <p class="bb-dz-formats">MP3 &middot; M4A &middot; WAV &middot; AAC &middot; OGG &nbsp;&bull;&nbsp; up to 200&thinsp;MB</p>
+      </div>
+    </div>
+
+    <!-- ── Selected File Row (visible after file chosen) ── -->
+    <div class="bb-file-row" id="bb-file-row" hidden>
+      <div class="bb-file-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M9 1.5V13.5M9 1.5L4.5 6M9 1.5L13.5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M1.5 14.25C1.5 14.25 1.5 16.5 9 16.5C16.5 16.5 16.5 14.25 16.5 14.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="bb-file-meta">
+        <span class="bb-file-name" id="bb-file-name"></span>
+        <span class="bb-file-size" id="bb-file-size"></span>
+      </div>
+      <button class="bb-remove" id="bb-remove" type="button" title="Remove file" aria-label="Remove selected file">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M3 3L11 11M11 3L3 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- ── Upload Button ── -->
+    <button class="bb-upload-btn" id="bb-upload-btn" type="button" disabled>
+      <span id="bb-btn-text">Upload My Story</span>
+      <span id="bb-btn-spinner" class="bb-spinner-wrap" hidden>
+        <svg class="bb-spinning" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="5.5" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+          <path d="M8 2.5A5.5 5.5 0 0 1 13.5 8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+    </button>
+
+    <!-- ── Processing Panel (visible while running) ── -->
+    <div class="bb-processing" id="bb-processing" hidden>
+      <div class="bb-progress-row">
+        <div class="bb-progress-track">
+          <div class="bb-progress-fill" id="bb-progress-fill" style="width:0%"></div>
+        </div>
+        <span class="bb-progress-pct" id="bb-progress-pct">0%</span>
+      </div>
+      <div class="bb-steps" id="bb-steps"></div>
+    </div>
+
+    <!-- ── Success Panel ── -->
+    <div class="bb-success" id="bb-success" hidden>
+      <div class="bb-success-check">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="11" cy="11" r="10" stroke="#16A34A" stroke-width="1.5"/>
+          <path d="M6.5 11L9.5 14L15.5 8" stroke="#16A34A" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="bb-success-body">
+        <p class="bb-success-title">Book created successfully</p>
+        <p class="bb-success-sub">Your story has been processed and your book is ready.</p>
+        <code class="bb-run-code" id="bb-run-id"></code>
+      </div>
+      <button class="bb-again-btn" id="bb-again" type="button">Upload another</button>
+    </div>
+
+    <!-- ── Error Panel ── -->
+    <div class="bb-error" id="bb-error" hidden>
+      <div class="bb-error-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="8" stroke="#DC2626" stroke-width="1.5"/>
+          <path d="M9 5V10M9 12.5V13" stroke="#DC2626" stroke-width="1.75" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <p class="bb-error-msg" id="bb-error-msg">Something went wrong. Please try again.</p>
+      <button class="bb-retry" id="bb-retry" type="button">Try again</button>
+    </div>
+
+  </div><!-- .bb-card -->
+</div><!-- #bb-root -->
+
+
+<!-- ─── Styles ───────────────────────────────────────────────── -->
+<style>
+/* Scoped reset */
+#bb-root, #bb-root *,
+#bb-root *::before,
+#bb-root *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Root */
+#bb-root {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 48px 20px 64px;
+}
+
+/* Card */
+.bb-card {
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 44px 48px 48px;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.05),
+    0 4px 6px -1px rgba(0,0,0,.05),
+    0 16px 48px -8px rgba(0,0,0,.10);
+}
+
+/* Header */
+.bb-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+.bb-logo { flex-shrink: 0; }
+.bb-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  letter-spacing: -0.25px;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+.bb-subtitle {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #6B7280;
+}
+
+/* Rule */
+.bb-rule {
+  height: 1px;
+  background: #F3F4F6;
+  margin-bottom: 28px;
+}
+
+/* Drop Zone */
+.bb-dropzone {
+  border: 1.5px dashed #D1D5DB;
+  border-radius: 16px;
+  background: #FAFAFA;
+  padding: 44px 28px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.18s ease, background 0.18s ease;
+  margin-bottom: 18px;
+  user-select: none;
+}
+.bb-dropzone:hover,
+.bb-dropzone:focus,
+.bb-dropzone.bb-over {
+  border-color: #374151;
+  background: #F3F4F6;
+}
+.bb-dz-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+.bb-dz-icon {
+  color: #9CA3AF;
+  margin-bottom: 6px;
+  transition: color 0.18s;
+}
+.bb-dropzone:hover .bb-dz-icon,
+.bb-dropzone.bb-over .bb-dz-icon {
+  color: #374151;
+}
+.bb-dz-primary {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #111827;
+}
+.bb-dz-secondary {
+  font-size: 13px;
+  color: #6B7280;
+}
+.bb-link-btn {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: #111827;
+  background: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  pointer-events: all;
+}
+.bb-link-btn:hover { color: #374151; }
+.bb-dz-formats {
+  font-size: 11.5px;
+  color: #9CA3AF;
+  letter-spacing: 0.01em;
+  margin-top: 4px;
+}
+
+/* File Row */
+.bb-file-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 14px;
+  margin-bottom: 18px;
+}
+.bb-file-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #E5E7EB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #6B7280;
+}
+.bb-file-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.bb-file-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #111827;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bb-file-size {
+  font-size: 12px;
+  color: #9CA3AF;
+}
+.bb-remove {
+  background: none;
+  cursor: pointer;
+  color: #9CA3AF;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  transition: color 0.15s, background 0.15s;
+}
+.bb-remove:hover {
+  color: #EF4444;
+  background: #FEF2F2;
+}
+
+/* Upload Button */
+.bb-upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 15px 20px;
+  background: #111827;
+  color: #ffffff;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s ease, opacity 0.18s ease;
+  letter-spacing: 0.01em;
+}
+.bb-upload-btn:hover:not(:disabled) { background: #1F2937; }
+.bb-upload-btn:active:not(:disabled) { background: #374151; }
+.bb-upload-btn:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+.bb-spinner-wrap { display: flex; align-items: center; }
+
+@keyframes bb-spin {
+  to { transform: rotate(360deg); }
+}
+.bb-spinning {
+  animation: bb-spin 0.75s linear infinite;
+}
+
+/* Processing Panel */
+.bb-processing {
+  margin-top: 24px;
+}
+.bb-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.bb-progress-track {
+  flex: 1;
+  height: 5px;
+  background: #F3F4F6;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.bb-progress-fill {
+  height: 100%;
+  background: #111827;
+  border-radius: 99px;
+  transition: width 0.55s cubic-bezier(.4,0,.2,1);
+}
+.bb-progress-pct {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #6B7280;
+  width: 30px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Step List */
+.bb-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bb-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.4;
+  transition: background 0.2s;
+}
+.bb-step-dot {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Pending step */
+.bb-step.pending { color: #9CA3AF; }
+.bb-step.pending .bb-step-dot::after {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #E5E7EB;
+}
+
+/* Active step */
+.bb-step.active {
+  background: #FFFBEB;
+  color: #92400E;
+}
+.bb-step.active .bb-step-dot::after {
+  content: '';
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #F59E0B;
+  animation: bb-blink 1s ease-in-out infinite;
+}
+@keyframes bb-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+/* Done step */
+.bb-step.done { color: #374151; }
+.bb-step.done .bb-step-dot {
+  color: #16A34A;
+}
+.bb-step.done .bb-step-dot::before {
+  content: '';
+  display: block;
+  width: 7px;
+  height: 4px;
+  border-left: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+/* Success Panel */
+.bb-success {
+  margin-top: 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px 20px;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 16px;
+}
+.bb-success-check { flex-shrink: 0; margin-top: 1px; }
+.bb-success-body  { flex: 1; }
+.bb-success-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #14532D;
+  margin-bottom: 4px;
+}
+.bb-success-sub {
+  font-size: 12.5px;
+  color: #166534;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.bb-run-code {
+  display: inline-block;
+  font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 11px;
+  color: #166534;
+  background: #DCFCE7;
+  padding: 3px 9px;
+  border-radius: 6px;
+}
+.bb-again-btn {
+  flex-shrink: 0;
+  background: none;
+  border: 1px solid #86EFAC;
+  border-radius: 9px;
+  padding: 7px 14px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #166534;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+  margin-top: 1px;
+}
+.bb-again-btn:hover {
+  background: #DCFCE7;
+  border-color: #4ADE80;
+}
+
+/* Error Panel */
+.bb-error {
+  margin-top: 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 18px;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 14px;
+}
+.bb-error-icon { flex-shrink: 0; margin-top: 1px; }
+.bb-error-msg {
+  flex: 1;
+  font-size: 13px;
+  color: #991B1B;
+  line-height: 1.5;
+}
+.bb-retry {
+  flex-shrink: 0;
+  background: none;
+  border: 1px solid #FECACA;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #B91C1C;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.bb-retry:hover { background: #FEE2E2; }
+
+/* Responsive */
+@media (max-width: 560px) {
+  .bb-card    { padding: 32px 24px 36px; }
+  .bb-header  { flex-direction: column; gap: 12px; }
+  .bb-success { flex-direction: column; }
+  .bb-error   { flex-direction: column; }
+}
+</style>
+
+
+<!-- ─── Script ───────────────────────────────────────────────── -->
+<script>
+(function () {
+  // ══════════════════════════════════════════════
+  // CONFIG — set this to your Babel Books server
+  // ══════════════════════════════════════════════
+  var SERVER_URL = 'http://localhost:3001';
+
+  // Pipeline step labels (must match server step names)
+  var STEPS = [
+    { key: 'intake_job',          label: 'Saving your audio'            },
+    { key: 'preprocess_audio',    label: 'Preparing audio'              },
+    { key: 'asr_transcribe',      label: 'Transcribing story'           },
+    { key: 'transcript_cleaner',  label: 'Cleaning transcript'          },
+    { key: 'storywriter',         label: 'Writing your story'           },
+    { key: 'style_bible',         label: 'Defining illustration style'  },
+    { key: 'prompt_writer',       label: 'Designing illustrations'      },
+    { key: 'image_generator',     label: 'Generating illustrations'     },
+    { key: 'image_qc',            label: 'Checking illustrations'       },
+    { key: 'layout_engine',       label: 'Planning page layout'         },
+    { key: 'pdf_builder',         label: 'Building your PDF'            },
+    { key: 'final_qc',            label: 'Final quality check'          },
+  ];
+
+  // ── Element refs ──────────────────────────────
+  var root        = document.getElementById('bb-root');
+  var dropzone    = document.getElementById('bb-dropzone');
+  var fileInput   = document.getElementById('bb-input');
+  var browseBtn   = document.getElementById('bb-browse');
+  var fileRow     = document.getElementById('bb-file-row');
+  var fileNameEl  = document.getElementById('bb-file-name');
+  var fileSizeEl  = document.getElementById('bb-file-size');
+  var removeBtn   = document.getElementById('bb-remove');
+  var uploadBtn   = document.getElementById('bb-upload-btn');
+  var btnText     = document.getElementById('bb-btn-text');
+  var btnSpinner  = document.getElementById('bb-btn-spinner');
+  var processing  = document.getElementById('bb-processing');
+  var progressFill= document.getElementById('bb-progress-fill');
+  var progressPct = document.getElementById('bb-progress-pct');
+  var stepsEl     = document.getElementById('bb-steps');
+  var successEl   = document.getElementById('bb-success');
+  var runIdEl     = document.getElementById('bb-run-id');
+  var againBtn    = document.getElementById('bb-again');
+  var errorEl     = document.getElementById('bb-error');
+  var errorMsgEl  = document.getElementById('bb-error-msg');
+  var retryBtn    = document.getElementById('bb-retry');
+
+  var selectedFile = null;
+  var pollTimer    = null;
+
+  // ── Utilities ─────────────────────────────────
+  function show(el) { el.hidden = false; }
+  function hide(el) { el.hidden = true; }
+
+  function fmtBytes(n) {
+    if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB';
+    return (n / 1024 / 1024).toFixed(1) + ' MB';
+  }
+
+  function setProgress(pct) {
+    progressFill.style.width = pct + '%';
+    progressPct.textContent  = Math.round(pct) + '%';
+  }
+
+  // ── Step list renderer ────────────────────────
+  function renderSteps(doneKeys, activeKey) {
+    stepsEl.innerHTML = '';
+    STEPS.forEach(function (s) {
+      var done   = doneKeys.indexOf(s.key) !== -1;
+      var active = !done && s.key === activeKey;
+      var cls    = done ? 'done' : (active ? 'active' : 'pending');
+      var div    = document.createElement('div');
+      div.className = 'bb-step ' + cls;
+      div.innerHTML =
+        '<span class="bb-step-dot"></span>' +
+        '<span>' + s.label + '</span>';
+      stepsEl.appendChild(div);
+    });
+  }
+
+  // ── File validation & selection ───────────────
+  function selectFile(file) {
+    if (!file) return;
+
+    var audioPattern = /\.(mp3|m4a|wav|ogg|aac|flac|wma|opus)$/i;
+    if (!/^audio\//i.test(file.type) && !audioPattern.test(file.name)) {
+      showError('Please select an audio file (MP3, M4A, WAV, OGG, AAC…).');
+      return;
+    }
+    if (file.size > 200 * 1024 * 1024) {
+      showError('That file is too large. Maximum size is 200 MB.');
+      return;
+    }
+
+    selectedFile = file;
+    fileNameEl.textContent = file.name;
+    fileSizeEl.textContent = fmtBytes(file.size);
+    hide(dropzone);
+    show(fileRow);
+    hide(errorEl);
+    hide(successEl);
+    hide(processing);
+    uploadBtn.disabled = false;
+  }
+
+  function clearFile() {
+    selectedFile = null;
+    fileInput.value = '';
+    show(dropzone);
+    hide(fileRow);
+    uploadBtn.disabled = true;
+  }
+
+  // ── Error display ─────────────────────────────
+  function showError(msg) {
+    errorMsgEl.textContent = msg;
+    show(errorEl);
+  }
+
+  // ── Reset everything to initial state ─────────
+  function reset() {
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    clearFile();
+    hide(processing);
+    hide(successEl);
+    hide(errorEl);
+    btnText.textContent = 'Upload My Story';
+    hide(btnSpinner);
+    uploadBtn.disabled = true;
+    setProgress(0);
+    stepsEl.innerHTML = '';
+  }
+
+  // ── Drag-and-drop ─────────────────────────────
+  dropzone.addEventListener('click', function (e) {
+    if (e.target !== browseBtn) fileInput.click();
+  });
+  dropzone.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
+  });
+  browseBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    fileInput.click();
+  });
+  fileInput.addEventListener('change', function () {
+    if (fileInput.files && fileInput.files[0]) selectFile(fileInput.files[0]);
+  });
+  dropzone.addEventListener('dragover', function (e) {
+    e.preventDefault();
+    dropzone.classList.add('bb-over');
+  });
+  dropzone.addEventListener('dragleave', function (e) {
+    if (!dropzone.contains(e.relatedTarget)) dropzone.classList.remove('bb-over');
+  });
+  dropzone.addEventListener('drop', function (e) {
+    e.preventDefault();
+    dropzone.classList.remove('bb-over');
+    var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) selectFile(f);
+  });
+
+  // ── Remove selected file ──────────────────────
+  removeBtn.addEventListener('click', clearFile);
+
+  // ── Reset buttons ─────────────────────────────
+  againBtn.addEventListener('click', reset);
+  retryBtn.addEventListener('click', reset);
+
+  // ── Upload ────────────────────────────────────
+  uploadBtn.addEventListener('click', function () {
+    if (!selectedFile) return;
+
+    // Lock UI
+    uploadBtn.disabled = true;
+    btnText.textContent = 'Uploading…';
+    show(btnSpinner);
+    hide(errorEl);
+    show(processing);
+    setProgress(0);
+    renderSteps([], null);
+
+    var formData = new FormData();
+    formData.append('audio', selectedFile);
+
+    // Upload the file
+    fetch(SERVER_URL + '/upload', { method: 'POST', body: formData })
+      .then(function (res) {
+        if (!res.ok) return res.json().then(function (d) { throw new Error(d.error || 'Server error ' + res.status); });
+        return res.json();
+      })
+      .then(function (data) {
+        var uploadId = data.upload_id;
+        btnText.textContent = 'Processing…';
+        setProgress(5);
+
+        // Poll for pipeline progress
+        pollTimer = setInterval(function () {
+          fetch(SERVER_URL + '/status/' + uploadId)
+            .then(function (r) { return r.json(); })
+            .then(function (s) {
+              var done = s.steps_done || [];
+              var pct  = Math.max(5, Math.round((done.length / STEPS.length) * 100));
+              setProgress(pct);
+              renderSteps(done, s.step || null);
+
+              if (s.status === 'complete') {
+                clearInterval(pollTimer); pollTimer = null;
+                setProgress(100);
+                renderSteps(STEPS.map(function (x) { return x.key; }), null);
+                hide(btnSpinner);
+                btnText.textContent = 'Done!';
+                runIdEl.textContent = s.run_id ? 'Run ID: ' + s.run_id : '';
+                show(successEl);
+              } else if (s.status === 'error') {
+                clearInterval(pollTimer); pollTimer = null;
+                hide(btnSpinner);
+                uploadBtn.disabled = false;
+                btnText.textContent = 'Upload My Story';
+                showError(s.error || 'Processing failed. Please try again.');
+              }
+            })
+            .catch(function () { /* network blip — keep polling */ });
+        }, 1500);
+      })
+      .catch(function (err) {
+        hide(btnSpinner);
+        uploadBtn.disabled = false;
+        btnText.textContent = 'Upload My Story';
+        showError(
+          err.message.includes('fetch') || err.message.includes('Failed')
+            ? 'Could not reach the Babel Books server. Make sure it\'s running on your computer (npm run serve).'
+            : err.message
+        );
+      });
+  });
+
+})();
+</script>

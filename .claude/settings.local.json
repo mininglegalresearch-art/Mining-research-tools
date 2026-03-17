@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install -r requirements.txt)",
+      "Bash(python3 -m pip install -r requirements.txt)",
+      "Bash(python3 tools/discover_mining_companies.py)",
+      "Bash(python3 tools/enrich_yfinance.py)",
+      "Read(//usr/local/**)",
+      "Read(//usr/bin/**)"
+    ]
+  }
+}
