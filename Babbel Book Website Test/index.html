@@ -34,6 +34,17 @@
   <style>
     html { scroll-behavior: smooth; }
 
+    /* ── Cascade text animation ── */
+    @keyframes cascadeIn {
+      from { opacity: 0; transform: translateX(-24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .cascade-line {
+      display: block;
+      opacity: 0;
+      animation: cascadeIn 0.55s ease forwards;
+    }
+
     /* Colored bar divider (mirrors Lovevery's decorative bars) */
     .color-bars {
       height: 14px;
@@ -170,9 +181,14 @@
 
     <!-- Overlay gradient + text -->
     <div id="hero-overlay" class="absolute inset-0 flex flex-col items-start justify-end pb-12 sm:pb-16 px-6 sm:px-12 lg:px-20">
-      <div class="mb-6 px-5 sm:px-8 py-4 sm:py-6 rounded-2xl inline-block" style="background: rgba(200,210,225,0.13); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);">
-        <h2 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white leading-tight max-w-2xl text-left">
-          A plain book.<br/><span style="color:#60CBC2;">A world waiting inside.</span>
+      <div class="mb-6 py-4 sm:py-5 pr-6 sm:pr-10 pl-2 rounded-2xl inline-block" style="background: rgba(200,210,225,0.13); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);">
+        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-snug text-left">
+          <span class="cascade-line" style="padding-left:0;       animation-delay:0.1s;">A</span>
+          <span class="cascade-line" style="padding-left:1.4rem;  animation-delay:0.28s;">plain</span>
+          <span class="cascade-line" style="padding-left:2.8rem;  animation-delay:0.46s;">book.</span>
+          <span class="cascade-line" style="padding-left:4.2rem;  animation-delay:0.64s; color:#60CBC2;">A world</span>
+          <span class="cascade-line" style="padding-left:5.6rem;  animation-delay:0.82s; color:#60CBC2;">waiting</span>
+          <span class="cascade-line" style="padding-left:7.0rem;  animation-delay:1.0s;  color:#60CBC2;">inside.</span>
         </h2>
       </div>
       <a href="#upload"
