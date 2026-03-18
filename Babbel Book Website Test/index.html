@@ -43,6 +43,7 @@
       display: block;
       opacity: 0;
       animation: cascadeIn 0.55s ease forwards;
+      transition: color 0.8s ease;
     }
 
     /* Colored bar divider (mirrors Lovevery's decorative bars) */
@@ -186,9 +187,9 @@
           <span class="cascade-line" style="padding-left:0;       animation-delay:0.1s;">A</span>
           <span class="cascade-line" style="padding-left:1.4rem;  animation-delay:0.28s;">plain</span>
           <span class="cascade-line" style="padding-left:2.8rem;  animation-delay:0.46s;">book.</span>
-          <span class="cascade-line" style="padding-left:4.2rem;  animation-delay:0.64s; color:#60CBC2;">A world</span>
-          <span class="cascade-line" style="padding-left:5.6rem;  animation-delay:0.82s; color:#60CBC2;">waiting</span>
-          <span class="cascade-line" style="padding-left:7.0rem;  animation-delay:1.0s;  color:#60CBC2;">inside.</span>
+          <span class="cascade-line" style="padding-left:4.2rem;  animation-delay:0.64s;">A world</span>
+          <span class="cascade-line" style="padding-left:5.6rem;  animation-delay:0.82s;">waiting</span>
+          <span class="cascade-line" style="padding-left:7.0rem;  animation-delay:1.0s;">inside.</span>
         </h2>
       </div>
       <a href="#upload"
@@ -949,6 +950,22 @@
 
   <!-- ───────────────────────── JS ───────────────────────── -->
   <script>
+    // ── Cascade text color cycling ───────────────────────────
+    (function() {
+      var palette = ['#ffffff', '#60CBC2', '#B85BBF', '#FF9955', '#BBDC00', '#60CBC2', '#ffffff'];
+      var lines = document.querySelectorAll('.cascade-line');
+      var phase = 0;
+      // Start cycling after cascade-in finishes
+      setTimeout(function() {
+        setInterval(function() {
+          lines.forEach(function(el, i) {
+            el.style.color = palette[(phase + i) % palette.length];
+          });
+          phase = (phase + 1) % palette.length;
+        }, 900);
+      }, 1600);
+    })();
+
     // ── Autoplay videos when they enter the viewport ────────
     // Needed on mobile where browsers suspend off-screen autoplay
     (function() {
