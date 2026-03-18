@@ -73,6 +73,42 @@
 
     /* Smooth file status transition */
     #file-status { transition: opacity 0.3s; }
+
+    /* ── Mobile nav menu ── */
+    #mobile-nav a { transition: color 0.15s; }
+
+    /* ── Mobile feature section overrides (< 1024px) ── */
+    @media (max-width: 1023px) {
+      /* Hero: hide side image and its gradient on mobile */
+      .hero-bg-img   { display: none !important; }
+      .hero-bg-grad  { display: none !important; }
+
+      /* Feature section 1: video flows as block header */
+      #samples { min-height: 0 !important; }
+      #feature-video {
+        position: relative !important;
+        top: auto !important; right: auto !important;
+        width: 100% !important;
+        height: 240px !important;
+        opacity: 1 !important;
+        display: block;
+      }
+      .feat1-grad, .feat1-fade { display: none !important; }
+      #feature-mute-btn { top: 10px !important; right: 10px !important; }
+
+      /* Feature section 2: video flows as block header */
+      .feat2-section { min-height: 0 !important; }
+      #feature-video-2 {
+        position: relative !important;
+        top: auto !important; left: auto !important;
+        width: 100% !important;
+        height: 240px !important;
+        opacity: 1 !important;
+        display: block;
+      }
+      .feat2-grad, .feat2-fade { display: none !important; }
+      #feature-mute-btn-2 { top: 10px !important; left: 10px !important; }
+    }
   </style>
 </head>
 <body class="font-sans text-charcoal bg-white">
@@ -101,13 +137,22 @@
         Create Your Book
       </a>
 
-      <!-- Mobile menu button (visual only for now) -->
-      <button class="md:hidden p-2 text-navy" aria-label="Menu">
+      <button onclick="toggleMobileNav()" id="hamburger-btn" class="md:hidden p-2 text-navy" aria-label="Menu">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
         </svg>
       </button>
     </div>
+  <!-- Mobile nav drawer -->
+  <div id="mobile-nav" class="hidden md:hidden bg-white border-b border-gray-100">
+    <div class="px-6 py-4 space-y-1">
+      <a href="#how-it-works" onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">How It Works</a>
+      <a href="#age-guide"     onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">Age Guide</a>
+      <a href="#samples"       onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">Samples</a>
+      <a href="#pricing"       onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">Pricing</a>
+      <a href="#upload"        onclick="closeMobileNav()" class="block mt-3 bg-navy text-white text-sm font-bold px-5 py-3 rounded-full text-center hover:bg-navy-dark transition-colors">Create Your Book</a>
+    </div>
+  </div>
   </nav>
 
   <!-- ───────────────────────── SCROLL-STOP VIDEO ───────────────────────── -->
@@ -125,12 +170,12 @@
     ></video>
 
     <!-- Overlay gradient + text -->
-    <div class="absolute inset-0 flex flex-col items-center justify-end pb-14 px-6 text-center"
+    <div class="absolute inset-0 flex flex-col items-center justify-end pb-10 sm:pb-14 px-4 sm:px-6 text-center"
          style="background: linear-gradient(to top, rgba(27,45,107,0.75) 0%, transparent 60%);">
       <p class="inline-block bg-teal/20 text-teal text-sm font-semibold px-4 py-1 rounded-full mb-4 tracking-wide uppercase">
         Watch the magic happen
       </p>
-      <h2 class="text-3xl lg:text-5xl font-extrabold text-white leading-tight mb-6 max-w-2xl">
+      <h2 class="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-white leading-tight mb-6 max-w-2xl">
         A plain book.<br/><span style="color:#FEDB00;">A world waiting inside.</span>
       </h2>
       <a href="#upload"
@@ -160,10 +205,10 @@
   <section class="relative bg-navy overflow-hidden">
     <!-- Background image — covers right 55%, fades into navy on the left -->
     <img src="WebImage - Parent Guiding.jpeg" alt=""
-         class="absolute top-0 right-0 h-full object-cover pointer-events-none"
+         class="hero-bg-img absolute top-0 right-0 h-full object-cover pointer-events-none"
          style="width: 55%; opacity: 0.85;" />
     <!-- Gradient: solid navy past image edge (45%), then smooth fade across image -->
-    <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to right, #1B2D6B 0%, #1B2D6B 45%, rgba(27,45,107,0.94) 53%, rgba(27,45,107,0.74) 60%, rgba(27,45,107,0.45) 67%, rgba(27,45,107,0.18) 74%, transparent 82%);"></div>
+    <div class="hero-bg-grad absolute inset-0 pointer-events-none" style="background: linear-gradient(to right, #1B2D6B 0%, #1B2D6B 45%, rgba(27,45,107,0.94) 53%, rgba(27,45,107,0.74) 60%, rgba(27,45,107,0.45) 67%, rgba(27,45,107,0.18) 74%, transparent 82%);"></div>
     <!-- Background gradient blob (keep subtle colour wash) -->
     <div class="absolute inset-0 opacity-20 pointer-events-none"
          style="background: radial-gradient(ellipse at 70% 50%, #60CBC2 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, #FEDB00 0%, transparent 50%);">
@@ -201,9 +246,9 @@
                 </svg>
               </div>
               <p id="file-status" class="text-white font-semibold text-lg">
-                Drop your audio file here
+                Tap or drop your audio file
               </p>
-              <p class="text-blue-200 text-sm">or click to browse &nbsp;·&nbsp; MP3, M4A, WAV, AAC</p>
+              <p class="text-blue-200 text-sm">MP3, M4A, WAV, AAC accepted</p>
               <p class="text-blue-300 text-xs mt-1">Ideal length: 2 – 3 minutes</p>
             </div>
           </div>
@@ -213,7 +258,7 @@
             <p class="text-teal text-xs font-semibold uppercase tracking-widest mb-1">Tell us about your child</p>
 
             <!-- Row 1: Name + Age -->
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label for="child-name" class="block text-blue-200 text-xs font-semibold mb-1.5">
                   What's your child's name? <span class="text-teal">*</span>
@@ -428,7 +473,7 @@
         <p class="inline-block bg-teal/20 text-teal text-sm font-semibold px-4 py-1 rounded-full mb-5 tracking-wide uppercase">
           Personalised for every stage
         </p>
-        <h2 class="text-3xl lg:text-4xl font-extrabold text-white leading-tight mb-4">
+        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight mb-4">
           How Babbel Books tailors<br/>your child's story
         </h2>
         <p class="text-blue-200 text-lg max-w-2xl mx-auto leading-relaxed">
@@ -588,9 +633,9 @@
       style="width: 55%; opacity: 0.72;"
     ></video>
     <!-- Gradient: solid past video edge (45%), then fades smoothly across the video -->
-    <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to right, #0d1f2d 0%, #0d1f2d 45%, rgba(13,31,45,0.94) 53%, rgba(13,31,45,0.74) 60%, rgba(13,31,45,0.45) 67%, rgba(13,31,45,0.18) 74%, transparent 82%);"></div>
+    <div class="feat1-grad absolute inset-0 pointer-events-none" style="background: linear-gradient(to right, #0d1f2d 0%, #0d1f2d 45%, rgba(13,31,45,0.94) 53%, rgba(13,31,45,0.74) 60%, rgba(13,31,45,0.45) 67%, rgba(13,31,45,0.18) 74%, transparent 82%);"></div>
     <!-- Bottom fade to ground the section -->
-    <div class="absolute bottom-0 left-0 right-0 pointer-events-none" style="height: 160px; background: linear-gradient(to bottom, transparent, #0f2318);"></div>
+    <div class="feat1-fade absolute bottom-0 left-0 right-0 pointer-events-none" style="height: 160px; background: linear-gradient(to bottom, transparent, #0f2318);"></div>
     <!-- Unmute button (top-right, over the video) -->
     <button
       id="feature-mute-btn"
@@ -658,7 +703,7 @@
   </section>
 
   <!-- ───────────────────────── FEATURE: ILLUSTRATIONS ───────────────────────── -->
-  <section class="relative overflow-hidden bg-white" style="min-height: 580px;">
+  <section class="feat2-section relative overflow-hidden bg-white" style="min-height: 580px;">
     <!-- Background video — covers left 55% so its center sits in the center of the visible area -->
     <video
       id="feature-video-2"
@@ -671,9 +716,9 @@
       style="width: 55%; opacity: 0.72;"
     ></video>
     <!-- Gradient: solid past video edge (45%), then fades smoothly across the video -->
-    <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to left, white 0%, white 45%, rgba(255,255,255,0.94) 53%, rgba(255,255,255,0.74) 60%, rgba(255,255,255,0.45) 67%, rgba(255,255,255,0.18) 74%, transparent 82%);"></div>
+    <div class="feat2-grad absolute inset-0 pointer-events-none" style="background: linear-gradient(to left, white 0%, white 45%, rgba(255,255,255,0.94) 53%, rgba(255,255,255,0.74) 60%, rgba(255,255,255,0.45) 67%, rgba(255,255,255,0.18) 74%, transparent 82%);"></div>
     <!-- Bottom fade -->
-    <div class="absolute bottom-0 left-0 right-0 pointer-events-none" style="height: 160px; background: linear-gradient(to bottom, transparent, white);"></div>
+    <div class="feat2-fade absolute bottom-0 left-0 right-0 pointer-events-none" style="height: 160px; background: linear-gradient(to bottom, transparent, white);"></div>
     <!-- Unmute button (top-left, over the video side) -->
     <button
       id="feature-mute-btn-2"
@@ -693,7 +738,7 @@
     <div class="relative z-10 max-w-6xl mx-auto px-6 py-16 lg:py-24">
       <div class="lg:flex lg:items-center lg:gap-16">
         <!-- Left half: empty — video fills this area through the gradient -->
-        <div class="lg:w-1/2"></div>
+        <div class="hidden lg:block lg:w-1/2"></div>
         <!-- Text (right half — sits over solid gradient) -->
         <div class="lg:w-1/2 mb-10 lg:mb-0">
           <p class="inline-block text-navy font-semibold text-sm uppercase tracking-widest mb-4">Step 2 — Illustrate</p>
@@ -755,15 +800,15 @@
       </p>
       <div class="grid md:grid-cols-3 gap-10 text-center">
         <div>
-          <p class="text-6xl font-extrabold text-navy mb-2">2–3</p>
+          <p class="text-5xl sm:text-6xl font-extrabold text-navy mb-2">2–3</p>
           <p class="text-gray-500 text-lg leading-snug">minutes of audio is all it takes to create a full book</p>
         </div>
         <div>
-          <p class="text-6xl font-extrabold text-navy mb-2">~25</p>
+          <p class="text-5xl sm:text-6xl font-extrabold text-navy mb-2">~25</p>
           <p class="text-gray-500 text-lg leading-snug">illustrated pages per story, ready in minutes</p>
         </div>
         <div>
-          <p class="text-6xl font-extrabold text-navy mb-2">∞</p>
+          <p class="text-5xl sm:text-6xl font-extrabold text-navy mb-2">∞</p>
           <p class="text-gray-500 text-lg leading-snug">stories to tell — every recording is a new adventure</p>
         </div>
       </div>
@@ -771,7 +816,7 @@
   </section>
 
   <!-- ───────────────────────── EMAIL CAPTURE ───────────────────────── -->
-  <section class="bg-off-white py-16 lg:py-20">
+  <section class="bg-off-white py-12 lg:py-20">
     <div class="max-w-5xl mx-auto px-6 md:flex md:items-start md:gap-16">
       <!-- Left: copy -->
       <div class="md:w-1/2 mb-10 md:mb-0">
@@ -891,6 +936,18 @@
 
   <!-- ───────────────────────── JS ───────────────────────── -->
   <script>
+    // ── Mobile nav ──────────────────────────────────────────
+    function toggleMobileNav() {
+      document.getElementById('mobile-nav').classList.toggle('hidden');
+    }
+    function closeMobileNav() {
+      document.getElementById('mobile-nav').classList.add('hidden');
+    }
+    // Close mobile nav when clicking a nav link or scrolling
+    window.addEventListener('scroll', function() {
+      document.getElementById('mobile-nav').classList.add('hidden');
+    }, { passive: true });
+
     // ── Video mute toggle ───────────────────────────────────
     function toggleMute() {
       const video = document.getElementById('hero-video');
