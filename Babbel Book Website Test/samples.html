@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sample Books — Babbel Books</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'navy':      '#1B2D6B',
+            'navy-dark': '#131C66',
+            'blue-tint': '#EEF3FF',
+            'off-white': '#FAF9F6',
+            'charcoal':  '#2B2B2B',
+            'teal':      '#60CBC2',
+            'sunshine':  '#FEDB00',
+            'plum':      '#B85BBF',
+            'lime':      '#BBDC00',
+            'tangerine': '#FF9955',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    html { scroll-behavior: smooth; }
+
+    /* Colored bar divider */
+    .color-bars {
+      height: 14px;
+      background: linear-gradient(
+        to right,
+        #60CBC2 0% 20%,
+        #FEDB00 20% 40%,
+        #B85BBF 40% 60%,
+        #BBDC00 60% 80%,
+        #FF9955 80% 100%
+      );
+    }
+
+    /* Mobile nav menu */
+    #mobile-nav a { transition: color 0.15s; }
+  </style>
+</head>
+<body class="font-sans text-charcoal bg-white">
+
+  <!-- ───────────────────────── NAV ───────────────────────── -->
+  <nav class="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-2">
+        <span class="text-2xl font-extrabold text-navy tracking-tight">Babbel
+          <span class="text-teal">Books</span>
+        </span>
+      </a>
+
+      <!-- Nav links (desktop) -->
+      <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-charcoal">
+        <a href="index.html#how-it-works" class="hover:text-navy transition-colors">How It Works</a>
+        <a href="index.html#age-guide"    class="hover:text-navy transition-colors">Age Guide</a>
+        <a href="samples.html"            class="text-navy font-bold transition-colors">Samples</a>
+        <a href="index.html#pricing"      class="hover:text-navy transition-colors">Pricing</a>
+      </div>
+
+      <!-- CTA -->
+      <a href="index.html#upload"
+         class="hidden md:inline-flex items-center gap-2 bg-navy text-white text-sm font-bold px-5 py-2.5 rounded-full hover:bg-navy-dark transition-colors">
+        Create Your Book
+      </a>
+
+      <button onclick="toggleMobileNav()" id="hamburger-btn" class="md:hidden p-2 text-navy" aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+    <!-- Mobile nav drawer -->
+    <div id="mobile-nav" class="hidden md:hidden bg-white border-b border-gray-100">
+      <div class="px-6 py-4 space-y-1">
+        <a href="index.html#how-it-works" onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">How It Works</a>
+        <a href="index.html#age-guide"    onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">Age Guide</a>
+        <a href="samples.html"            onclick="closeMobileNav()" class="block text-sm font-bold text-navy py-2 border-b border-gray-50">Samples</a>
+        <a href="index.html#pricing"      onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">Pricing</a>
+        <a href="index.html#upload"       onclick="closeMobileNav()" class="block mt-3 bg-navy text-white text-sm font-bold px-5 py-3 rounded-full text-center hover:bg-navy-dark transition-colors">Create Your Book</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ───────────────────────── HERO ───────────────────────── -->
+  <section class="relative bg-navy overflow-hidden">
+    <!-- Radial gradient blob -->
+    <div class="absolute inset-0 opacity-20 pointer-events-none"
+         style="background: radial-gradient(ellipse at 70% 50%, #60CBC2 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, #FEDB00 0%, transparent 50%);">
+    </div>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-6 py-20 lg:py-28 text-center">
+      <p class="inline-block bg-teal/20 text-teal text-sm font-semibold px-4 py-1 rounded-full mb-6 tracking-wide uppercase">
+        Real stories, real kids
+      </p>
+      <h1 class="text-4xl lg:text-6xl font-extrabold text-white leading-tight mb-5">
+        Sample Books
+      </h1>
+      <p class="text-blue-100 text-xl lg:text-2xl mb-6 max-w-2xl mx-auto leading-relaxed">
+        Three real stories — one from each age group — made by Babbel Books.
+      </p>
+      <a href="index.html" class="text-blue-300 text-sm font-semibold hover:text-white transition-colors">
+        ← Back to home
+      </a>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── COLOR BARS ───────────────────────── -->
+  <div class="color-bars w-full"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SAMPLE 1 — YOUNG TOTS (0–2)
+  ════════════════════════════════════════════════════════════════ -->
+  <section class="bg-white py-16 lg:py-24">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <!-- Age badge -->
+      <p class="text-teal text-xs font-semibold uppercase tracking-widest mb-8">Ages 0 – 2 · Young Tots</p>
+
+      <!-- Desktop: images left, info right -->
+      <div class="flex flex-col lg:flex-row lg:items-start lg:gap-12">
+
+        <!-- Image grid -->
+        <div class="lg:w-3/5 mb-10 lg:mb-0">
+          <div class="grid grid-cols-3 gap-2 lg:gap-3">
+            <!-- Page 1 -->
+            <div class="relative rounded-xl overflow-hidden" style="aspect-ratio: 3/4; background: #EEF3FF;">
+              <div class="absolute inset-0 flex flex-col items-center justify-center gap-2 text-navy/40">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <p class="text-xs font-semibold text-center px-2">Sample page</p>
+              </div>
+            </div>
+            <!-- Page 2 -->
+            <div class="relative rounded-xl overflow-hidden" style="aspect-ratio: 3/4; background: #E0F5F4;">
+              <div class="absolute inset-0 flex flex-col items-center justify-center gap-2 text-navy/40">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <p class="text-xs font-semibold text-center px-2">Sample page</p>
+              </div>
+            </div>
+            <!-- Page 3 -->
+            <div class="relative rounded-xl overflow-hidden" style="aspect-ratio: 3/4; background: #EEF3FF;">
+              <div class="absolute inset-0 flex flex-col items-center justify-center gap-2 text-navy/40">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <p class="text-xs font-semibold text-center px-2">Sample page</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info card -->
+        <div class="lg:w-2/5">
+          <h2 class="text-2xl font-extrabold text-navy mb-1">Lena</h2>
+          <p class="text-teal text-xs font-semibold uppercase tracking-widest mb-4">Age 2 · Young Tots</p>
+          <p class="text-gray-500 leading-relaxed mb-6">
+            Lena told us about her stuffed elephant, Peanut, and the rainy day they spent together. Her story became a 12-page board-book with bold, colourful illustrations.
+          </p>
+
+          <!-- Audio -->
+          <div class="mb-6">
+            <p class="text-sm font-semibold text-navy mb-2">Original recording:</p>
+            <audio controls class="w-full mt-2">
+              <source src="samples/lena_recording.mp3" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+            <p class="text-xs text-gray-400 mt-1">Replace src with your audio file path.</p>
+          </div>
+
+          <!-- CTA -->
+          <a href="index.html#upload" class="text-teal font-semibold text-sm hover:underline transition-colors">
+            Create your own →
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── COLOR BARS ───────────────────────── -->
+  <div class="color-bars w-full"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SAMPLE 2 — YOUNG READERS (3–5)
+  ════════════════════════════════════════════════════════════════ -->
+  <section class="py-16 lg:py-24" style="background-color: #FAF9F6;">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <!-- Age badge -->
+      <p class="text-xs font-semibold uppercase tracking-widest mb-8" style="color: #c9a800;">Ages 3 – 5 · Young Readers</p>
+
+      <!-- Desktop: info left, images right (alternating) -->
+      <div class="flex flex-col lg:flex-row-reverse lg:items-start lg:gap-12">
+
+        <!-- Image grid -->
+        <div class="lg:w-3/5 mb-10 lg:mb-0">
+          <div class="grid grid-cols-3 gap-2 lg:gap-3">
+            <!-- Page 1 -->
+            <div class="relative rounded-xl overflow-hidden" style="aspect-ratio: 3/4; background: #FEF9E7;">
+              <div class="absolute inset-0 flex flex-col items-center justify-center gap-2" style="color: rgba(201,168,0,0.45);">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <p class="text-xs font-semibold text-center px-2">Sample page</p>
+              </div>
+            </div>
+            <!-- Page 2 -->
+            <div class="relative rounded-xl overflow-hidden" style="aspect-ratio: 3/4; background: #FFFDE7;">
+              <div class="absolute inset-0 flex flex-col items-center justify-center gap-2" style="color: rgba(201,168,0,0.45);">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <p class="text-xs font-semibold text-center px-2">Sample page</p>
+              </div>
+            </div>
+            <!-- Page 3 -->
+            <div class="relative rounded-xl overflow-hidden" style="aspect-ratio: 3/4; background: #FEF9E7;">
+              <div class="absolute inset-0 flex flex-col items-center justify-center gap-2" style="color: rgba(201,168,0,0.45);">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <p class="text-xs font-semibold text-center px-2">Sample page</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info card -->
+        <div class="lg:w-2/5">
+          <h2 class="text-2xl font-extrabold text-navy mb-1">Marco</h2>
+          <p class="text-xs font-semibold uppercase tracking-widest mb-4" style="color: #c9a800;">Age 4 · Young Readers</p>
+          <p class="text-gray-500 leading-relaxed mb-6">
+            Marco's story took us to a dragon-guarded castle, a princess who could whistle louder than thunder, and a happy ending involving cake. 18 beautifully illustrated pages.
+          </p>
+
+          <!-- Audio -->
+          <div class="mb-6">
+            <p class="text-sm font-semibold text-navy mb-2">Original recording:</p>
+            <audio controls class="w-full mt-2">
+              <source src="samples/marco_recording.mp3" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+            <p class="text-xs text-gray-400 mt-1">Replace src with your audio file path.</p>
+          </div>
+
+          <!-- CTA -->
+          <a href="index.html#upload" class="text-teal font-semibold text-sm hover:underline transition-colors">
+            Create your own →
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── COLOR BARS ───────────────────────── -->
+  <div class="color-bars w-full"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SAMPLE 3 — POST-TODDLER READERS (6–10)
+  ════════════════════════════════════════════════════════════════ -->
+  <section class="bg-white py-16 lg:py-24">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <!-- Age badge -->
+      <p class="text-plum text-xs font-semibold uppercase tracking-widest mb-8">Ages 6 – 10 · Post-Toddler Readers</p>
+
+      <!-- Desktop: images left, info right -->
+      <div class="flex flex-col lg:flex-row lg:items-start lg:gap-12">
+
+        <!-- Image grid -->
+        <div class="lg:w-3/5 mb-10 lg:mb-0">
+          <div class="grid grid-cols-3 gap-2 lg:gap-3">
+            <!-- Page 1 -->
+            <div class="relative rounded-xl overflow-hidden" style="aspect-ratio: 3/4; background: #F5EEF8;">
+              <div class="absolute inset-0 flex flex-col items-center justify-center gap-2" style="color: rgba(184,91,191,0.4);">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <p class="text-xs font-semibold text-center px-2">Sample page</p>
+              </div>
+            </div>
+            <!-- Page 2 -->
+            <div class="relative rounded-xl overflow-hidden" style="aspect-ratio: 3/4; background: #F3E8F8;">
+              <div class="absolute inset-0 flex flex-col items-center justify-center gap-2" style="color: rgba(184,91,191,0.4);">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <p class="text-xs font-semibold text-center px-2">Sample page</p>
+              </div>
+            </div>
+            <!-- Page 3 -->
+            <div class="relative rounded-xl overflow-hidden" style="aspect-ratio: 3/4; background: #F5EEF8;">
+              <div class="absolute inset-0 flex flex-col items-center justify-center gap-2" style="color: rgba(184,91,191,0.4);">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <p class="text-xs font-semibold text-center px-2">Sample page</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info card -->
+        <div class="lg:w-2/5">
+          <h2 class="text-2xl font-extrabold text-navy mb-1">Aisha</h2>
+          <p class="text-plum text-xs font-semibold uppercase tracking-widest mb-4">Age 8 · Post-Toddler Readers</p>
+          <p class="text-gray-500 leading-relaxed mb-6">
+            Aisha narrated an epic adventure spanning three kingdoms, a mischievous fox spy, and a twist ending she invented on the spot. 25 pages of detailed, dynamic illustrations.
+          </p>
+
+          <!-- Audio -->
+          <div class="mb-6">
+            <p class="text-sm font-semibold text-navy mb-2">Original recording:</p>
+            <audio controls class="w-full mt-2">
+              <source src="samples/aisha_recording.mp3" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+            <p class="text-xs text-gray-400 mt-1">Replace src with your audio file path.</p>
+          </div>
+
+          <!-- CTA -->
+          <a href="index.html#upload" class="text-teal font-semibold text-sm hover:underline transition-colors">
+            Create your own →
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── COLOR BARS ───────────────────────── -->
+  <div class="color-bars w-full"></div>
+
+  <!-- ───────────────────────── FOOTER ───────────────────────── -->
+  <footer class="bg-navy text-white">
+    <div class="max-w-6xl mx-auto px-6 py-12 lg:py-16">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+        <!-- Brand -->
+        <div class="col-span-2 md:col-span-1">
+          <p class="text-2xl font-extrabold mb-3">Babbel<span class="text-teal">Books</span></p>
+          <p class="text-blue-200 text-sm leading-relaxed max-w-xs">
+            Empowering young authors and artists — one bedtime story at a time.
+          </p>
+        </div>
+
+        <!-- Product -->
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-widest text-blue-200 mb-4">Product</h4>
+          <ul class="space-y-2 text-sm text-blue-100">
+            <li><a href="index.html#how-it-works" class="hover:text-white transition-colors">How It Works</a></li>
+            <li><a href="index.html#age-guide"    class="hover:text-white transition-colors">Age Guide</a></li>
+            <li><a href="samples.html"            class="hover:text-white transition-colors">Sample Books</a></li>
+            <li><a href="index.html#pricing"      class="hover:text-white transition-colors">Pricing</a></li>
+          </ul>
+        </div>
+
+        <!-- Company -->
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-widest text-blue-200 mb-4">Company</h4>
+          <ul class="space-y-2 text-sm text-blue-100">
+            <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-widest text-blue-200 mb-4">Legal</h4>
+          <ul class="space-y-2 text-sm text-blue-100">
+            <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-blue-300 text-sm">© 2026 Babbel Books. All rights reserved.</p>
+        <div class="flex items-center gap-4">
+          <!-- Instagram -->
+          <a href="https://www.instagram.com/babbelbooks" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+          <!-- X / Twitter -->
+          <a href="#" aria-label="X / Twitter" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.845L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          <!-- TikTok -->
+          <a href="#" aria-label="TikTok" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.73a4.85 4.85 0 01-1.01-.04z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ───────────────────────── JS ───────────────────────── -->
+  <script>
+    // Mobile nav
+    function toggleMobileNav() {
+      document.getElementById('mobile-nav').classList.toggle('hidden');
+    }
+    function closeMobileNav() {
+      document.getElementById('mobile-nav').classList.add('hidden');
+    }
+    // Close mobile nav on scroll
+    window.addEventListener('scroll', function() {
+      document.getElementById('mobile-nav').classList.add('hidden');
+    }, { passive: true });
+  </script>
+
+</body>
+</html>
