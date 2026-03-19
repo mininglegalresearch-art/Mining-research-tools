@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About Us — Babbel Books</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'navy':      '#1B2D6B',
+            'navy-dark': '#131C66',
+            'blue-tint': '#EEF3FF',
+            'off-white': '#FAF9F6',
+            'charcoal':  '#2B2B2B',
+            'teal':      '#60CBC2',
+            'sunshine':  '#FEDB00',
+            'plum':      '#B85BBF',
+            'lime':      '#BBDC00',
+            'tangerine': '#FF9955',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    html { scroll-behavior: smooth; }
+
+    .color-bars {
+      height: 14px;
+      background: linear-gradient(
+        to right,
+        #60CBC2 0% 20%,
+        #FEDB00 20% 40%,
+        #B85BBF 40% 60%,
+        #BBDC00 60% 80%,
+        #FF9955 80% 100%
+      );
+    }
+
+    #mobile-nav a { transition: color 0.15s; }
+
+    .pull-quote {
+      border-left: 4px solid #60CBC2;
+    }
+  </style>
+</head>
+<body class="font-sans text-charcoal bg-white">
+
+  <!-- ───────────────────────── NAV ───────────────────────── -->
+  <nav class="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <span class="text-2xl font-extrabold text-navy tracking-tight">Babbel<span class="text-teal">Books</span></span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-charcoal">
+        <a href="index.html#how-it-works" class="hover:text-navy transition-colors">How It Works</a>
+        <a href="index.html#age-guide"    class="hover:text-navy transition-colors">Age Guide</a>
+        <a href="samples.html"            class="hover:text-navy transition-colors">Samples</a>
+        <a href="pricing.html"            class="hover:text-navy transition-colors">Pricing</a>
+        <a href="about.html"              class="text-navy font-bold transition-colors">About Us</a>
+      </div>
+
+      <a href="index.html#upload"
+         class="hidden md:inline-flex items-center gap-2 bg-navy text-white text-sm font-bold px-5 py-2.5 rounded-full hover:bg-navy-dark transition-colors">
+        Create Your Book
+      </a>
+
+      <button onclick="toggleMobileNav()" id="hamburger-btn" class="md:hidden p-2 text-navy" aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobile-nav" class="hidden md:hidden bg-white border-b border-gray-100">
+      <div class="px-6 py-4 space-y-1">
+        <a href="index.html#how-it-works" onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">How It Works</a>
+        <a href="index.html#age-guide"    onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">Age Guide</a>
+        <a href="samples.html"            onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">Samples</a>
+        <a href="pricing.html"            onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">Pricing</a>
+        <a href="about.html"              onclick="closeMobileNav()" class="block text-sm font-bold text-navy py-2 border-b border-gray-50">About Us</a>
+        <a href="index.html#upload"       onclick="closeMobileNav()" class="block mt-3 bg-navy text-white text-sm font-bold px-5 py-3 rounded-full text-center hover:bg-navy-dark transition-colors">Create Your Book</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ───────────────────────── HERO ───────────────────────── -->
+  <section class="relative bg-navy overflow-hidden">
+    <div class="absolute inset-0 opacity-20 pointer-events-none"
+         style="background: radial-gradient(ellipse at 70% 30%, #60CBC2 0%, transparent 60%), radial-gradient(ellipse at 15% 80%, #FEDB00 0%, transparent 50%);">
+    </div>
+    <div class="relative z-10 max-w-6xl mx-auto px-6 py-20 lg:py-28 text-center">
+      <p class="inline-block bg-teal/20 text-teal text-sm font-semibold px-4 py-1 rounded-full mb-6 tracking-wide uppercase">
+        Our story
+      </p>
+      <h1 class="text-4xl lg:text-6xl font-extrabold text-white leading-tight mb-5">
+        Built by parents,<br/>for parents.
+      </h1>
+      <p class="text-blue-200 text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed">
+        Babbel Books started as a late-night idea between two exhausted, book-loving parents — and a daughter who wouldn't stop telling stories.
+      </p>
+    </div>
+  </section>
+
+  <!-- Color bars -->
+  <div class="color-bars"></div>
+
+  <!-- ───────────────────────── STORY SECTION ───────────────────────── -->
+  <section class="bg-white py-16 lg:py-24">
+    <div class="max-w-3xl mx-auto px-6">
+
+      <!-- Origin -->
+      <div class="mb-14">
+        <p class="text-teal text-sm font-bold uppercase tracking-widest mb-3">Where it all began</p>
+        <h2 class="text-3xl lg:text-4xl font-extrabold text-navy mb-6 leading-snug">
+          Her name is Josephine Rose, and she changed everything.
+        </h2>
+        <p class="text-gray-600 text-lg leading-relaxed mb-5">
+          From the very beginning, Josie — as we call her — was a babbler. Before she could form full sentences, she was stringing together sounds, gestures, and expressions that somehow told a complete story. We'd sit on the floor with her, completely transfixed, trying to piece together whatever epic adventure was unfolding in her little mind.
+        </p>
+        <p class="text-gray-600 text-lg leading-relaxed">
+          We're her parents — a couple of busy millennials trying to figure out this whole parenting thing one bedtime at a time. And like a lot of parents our age, we spend a lot of energy thinking about screens. Our phones are never far away. Tablets are everywhere. And the pressure to hand one over — just for five minutes of quiet — is very, very real.
+        </p>
+      </div>
+
+      <!-- Pull quote -->
+      <div class="pull-quote pl-6 mb-14">
+        <p class="text-xl lg:text-2xl font-bold text-navy leading-snug italic">
+          "We didn't want technology to steal her attention span. We wanted it to light up her imagination."
+        </p>
+      </div>
+
+      <!-- The decision -->
+      <div class="mb-14">
+        <p class="text-teal text-sm font-bold uppercase tracking-widest mb-3">The choice we made</p>
+        <h2 class="text-2xl lg:text-3xl font-extrabold text-navy mb-6">We doubled down on bedtime reading.</h2>
+        <p class="text-gray-600 text-lg leading-relaxed mb-5">
+          We made a decision early on: books before bed, every night, no exceptions. Not because we had it all figured out, but because we'd read enough about early childhood development to know that those quiet moments — a warm lamp, a soft voice, a story — do something that no app can replicate. They build connection. They build imagination. They build the kind of focus that will matter for the rest of her life.
+        </p>
+        <p class="text-gray-600 text-lg leading-relaxed">
+          But one night, after reading the same board book for what felt like the forty-seventh time that week, we looked at each other and had an idea. What if Josie's story — her actual story, the one she'd been babbling about all afternoon — could become the book?
+        </p>
+      </div>
+
+      <!-- The idea -->
+      <div class="bg-blue-tint rounded-3xl px-8 py-10 mb-14">
+        <p class="text-teal text-sm font-bold uppercase tracking-widest mb-3">The idea</p>
+        <h2 class="text-2xl lg:text-3xl font-extrabold text-navy mb-5">That's how Babbel Books was born.</h2>
+        <p class="text-gray-600 text-lg leading-relaxed mb-5">
+          We wanted to build something that used technology not as a distraction, but as a tool — a way to take the magical, chaotic, completely unrepeatable stories that children tell and turn them into something real. Something they could hold. Something you could read together, over and over again.
+        </p>
+        <p class="text-gray-600 text-lg leading-relaxed">
+          Every Babbel Book starts with a voice recording — your child, in their own words, telling their own story. We handle the rest: the writing, the illustrations, the printing, the delivery. What arrives at your door is a hardcover book that is genuinely, irreplaceably theirs.
+        </p>
+      </div>
+
+      <!-- The bigger picture -->
+      <div class="mb-14">
+        <p class="text-teal text-sm font-bold uppercase tracking-widest mb-3">The bigger picture</p>
+        <h2 class="text-2xl lg:text-3xl font-extrabold text-navy mb-6">We're raising a generation that needs to know how to be offline.</h2>
+        <p class="text-gray-600 text-lg leading-relaxed mb-5">
+          We say this with love, because we include ourselves in it: our generation grew up watching the internet take over, and we handed smartphones to our kids before we fully understood what that meant. We're not anti-technology — clearly. But we do believe that for young children especially, the moments that matter most happen away from screens.
+        </p>
+        <p class="text-gray-600 text-lg leading-relaxed mb-5">
+          Sitting with your child and reading a book they made is one of those moments. It's not productive in any measurable way. It doesn't teach them to code or prepare them for some future career. It just reminds them — and you — that their voice matters. That their stories are worth telling. That being present together is the whole point.
+        </p>
+        <p class="text-gray-600 text-lg leading-relaxed">
+          If Babbel Books gets even a few more families to put the tablets down and crack open a book at bedtime, then Josie's babbling was worth every word.
+        </p>
+      </div>
+
+      <!-- Pull quote 2 -->
+      <div class="pull-quote pl-6 mb-14">
+        <p class="text-xl lg:text-2xl font-bold text-navy leading-snug italic">
+          "Your child's voice is the most creative thing in your house. We just help you keep it forever."
+        </p>
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center">
+        <p class="text-gray-500 text-lg mb-6">Ready to turn your child's story into something they'll treasure?</p>
+        <a href="index.html#upload"
+           class="inline-flex items-center gap-2 bg-navy text-white text-sm font-bold px-8 py-4 rounded-full hover:bg-navy-dark transition-colors">
+          Create Your Book →
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ───────────────────────── VALUES STRIP ───────────────────────── -->
+  <section class="bg-navy py-14">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="grid sm:grid-cols-3 gap-10 text-center">
+        <div>
+          <div class="text-3xl mb-3">📖</div>
+          <h3 class="font-bold text-white mb-2">Books over screens</h3>
+          <p class="text-blue-200 text-sm leading-relaxed">We genuinely believe that reading together is one of the most valuable things a family can do. Full stop.</p>
+        </div>
+        <div>
+          <div class="text-3xl mb-3">🎙️</div>
+          <h3 class="font-bold text-white mb-2">Every voice matters</h3>
+          <p class="text-blue-200 text-sm leading-relaxed">Children's stories are wild and wonderful and real. We treat every one with the respect it deserves.</p>
+        </div>
+        <div>
+          <div class="text-3xl mb-3">🏠</div>
+          <h3 class="font-bold text-white mb-2">Family-made, family-run</h3>
+          <p class="text-blue-200 text-sm leading-relaxed">We're not a faceless company. We're parents, just like you, trying to do right by our kids.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── FOOTER ───────────────────────── -->
+  <footer class="bg-navy text-white border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-6 py-12 lg:py-16">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+        <div class="col-span-2 md:col-span-1">
+          <p class="text-2xl font-extrabold mb-3">Babbel<span class="text-teal">Books</span></p>
+          <p class="text-blue-200 text-sm leading-relaxed max-w-xs">Empowering young authors and artists — one bedtime story at a time.</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-widest text-blue-200 mb-4">Product</h4>
+          <ul class="space-y-2 text-sm text-blue-100">
+            <li><a href="index.html#how-it-works" class="hover:text-white transition-colors">How It Works</a></li>
+            <li><a href="index.html#age-guide"     class="hover:text-white transition-colors">Age Guide</a></li>
+            <li><a href="samples.html"             class="hover:text-white transition-colors">Sample Books</a></li>
+            <li><a href="pricing.html"             class="hover:text-white transition-colors">Pricing</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-widest text-blue-200 mb-4">Company</h4>
+          <ul class="space-y-2 text-sm text-blue-100">
+            <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-widest text-blue-200 mb-4">Legal</h4>
+          <ul class="space-y-2 text-sm text-blue-100">
+            <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-blue-300 text-sm">© 2026 Babbel Books. All rights reserved.</p>
+        <div class="flex items-center gap-4">
+          <a href="https://www.instagram.com/babbelbooks" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="X / Twitter" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.845L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="TikTok" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.73a4.85 4.85 0 01-1.01-.04z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ───────────────────────── JS ───────────────────────── -->
+  <script>
+    function toggleMobileNav() {
+      document.getElementById('mobile-nav').classList.toggle('hidden');
+    }
+    function closeMobileNav() {
+      document.getElementById('mobile-nav').classList.add('hidden');
+    }
+    window.addEventListener('scroll', function() {
+      document.getElementById('mobile-nav').classList.add('hidden');
+    }, { passive: true });
+  </script>
+
+</body>
+</html>
