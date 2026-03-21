@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pricing — Babbel Books</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'navy':      '#1B2D6B',
+            'navy-dark': '#131C66',
+            'blue-tint': '#EEF3FF',
+            'off-white': '#FAF9F6',
+            'charcoal':  '#2B2B2B',
+            'teal':      '#60CBC2',
+            'sunshine':  '#FEDB00',
+            'plum':      '#B85BBF',
+            'lime':      '#BBDC00',
+            'tangerine': '#FF9955',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    html { scroll-behavior: smooth; }
+
+    .color-bars {
+      height: 14px;
+      background: linear-gradient(
+        to right,
+        #60CBC2 0% 20%,
+        #FEDB00 20% 40%,
+        #B85BBF 40% 60%,
+        #BBDC00 60% 80%,
+        #FF9955 80% 100%
+      );
+    }
+
+    #mobile-nav a { transition: color 0.15s; }
+
+    .price-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .price-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 48px rgba(27,45,107,0.13);
+    }
+
+    .btn-checkout {
+      transition: background 0.18s ease, transform 0.12s ease;
+    }
+    .btn-checkout:active {
+      transform: scale(0.97);
+    }
+    .btn-checkout:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .check-icon { color: #60CBC2; }
+  </style>
+</head>
+<body class="font-sans text-charcoal bg-white">
+
+  <!-- ───────────────────────── NAV ───────────────────────── -->
+  <nav class="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <span class="text-2xl font-extrabold text-navy tracking-tight">Babbel<span class="text-teal">Books</span></span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-charcoal">
+        <a href="index.html#how-it-works" class="hover:text-navy transition-colors">How It Works</a>
+        <a href="index.html#age-guide"    class="hover:text-navy transition-colors">Age Guide</a>
+        <a href="samples.html"            class="hover:text-navy transition-colors">Samples</a>
+        <a href="pricing.html"            class="text-navy font-bold transition-colors">Pricing</a>
+        <a href="about.html"              class="hover:text-navy transition-colors">About Us</a>
+      </div>
+
+      <a href="index.html#upload"
+         class="hidden md:inline-flex items-center gap-2 bg-navy text-white text-sm font-bold px-5 py-2.5 rounded-full hover:bg-navy-dark transition-colors">
+        Create Your Book
+      </a>
+
+      <button onclick="toggleMobileNav()" id="hamburger-btn" class="md:hidden p-2 text-navy" aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobile-nav" class="hidden md:hidden bg-white border-b border-gray-100">
+      <div class="px-6 py-4 space-y-1">
+        <a href="index.html#how-it-works" onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">How It Works</a>
+        <a href="index.html#age-guide"    onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">Age Guide</a>
+        <a href="samples.html"            onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">Samples</a>
+        <a href="pricing.html"            onclick="closeMobileNav()" class="block text-sm font-bold text-navy py-2 border-b border-gray-50">Pricing</a>
+        <a href="about.html"              onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">About Us</a>
+        <a href="index.html#upload"       onclick="closeMobileNav()" class="block mt-3 bg-navy text-white text-sm font-bold px-5 py-3 rounded-full text-center hover:bg-navy-dark transition-colors">Create Your Book</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ───────────────────────── HERO ───────────────────────── -->
+  <section class="relative bg-navy overflow-hidden">
+    <div class="absolute inset-0 opacity-20 pointer-events-none"
+         style="background: radial-gradient(ellipse at 70% 30%, #60CBC2 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, #FEDB00 0%, transparent 50%);">
+    </div>
+    <div class="relative z-10 max-w-6xl mx-auto px-6 py-20 lg:py-28 text-center">
+      <p class="inline-block bg-teal/20 text-teal text-sm font-semibold px-4 py-1 rounded-full mb-6 tracking-wide uppercase">
+        Simple, transparent pricing
+      </p>
+      <h1 class="text-4xl lg:text-6xl font-extrabold text-white leading-tight mb-5">
+        A keepsake worth every page.
+      </h1>
+      <p class="text-blue-200 text-lg lg:text-xl max-w-2xl mx-auto">
+        Two books, crafted for two different seasons of childhood. Both professionally printed, both delivered to your door.
+      </p>
+    </div>
+  </section>
+
+  <!-- Color bars -->
+  <div class="color-bars"></div>
+
+  <!-- ───────────────────────── PRICING CARDS ───────────────────────── -->
+  <section class="bg-off-white py-16 lg:py-24">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-8 items-stretch">
+
+        <!-- Card 1: Tiny Tales -->
+        <div class="price-card bg-white rounded-3xl shadow-md overflow-hidden flex flex-col">
+          <!-- Header band -->
+          <div class="px-8 pt-8 pb-6" style="background: linear-gradient(135deg, #0d1f2d 0%, #1B2D6B 100%);">
+            <span class="inline-block bg-teal/20 text-teal text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4">Ages 0 – 2</span>
+            <h2 class="text-3xl font-extrabold text-white mb-1">Tiny Tales</h2>
+            <p class="text-blue-200 text-sm leading-relaxed">A short, bold adventure sized just right for the youngest imaginations.</p>
+            <div class="mt-6 flex items-end gap-1">
+              <span class="text-5xl font-extrabold text-white">$24</span>
+              <span class="text-3xl font-extrabold text-white">.94</span>
+              <span class="text-blue-300 text-sm mb-1 ml-1">+ tax</span>
+            </div>
+          </div>
+
+          <!-- Features -->
+          <div class="px-8 py-7 flex-1">
+            <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-5">What's included</p>
+            <ul class="space-y-4 text-sm text-charcoal">
+              <li class="flex items-start gap-3">
+                <svg class="check-icon w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span><strong>15 illustrated pages</strong> — the perfect length for little attention spans</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="check-icon w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span><strong>Bold, high-contrast artwork</strong> designed for developing young eyes</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="check-icon w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span><strong>Short, rhythmic sentences</strong> with repetition and sensory language</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="check-icon w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span><strong>Your child as the hero</strong> — name, friends, and favourite toys woven in</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="check-icon w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span><strong>Professionally printed hardcover</strong> — built to survive little hands</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="check-icon w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span><strong>Delivered to your door</strong> — ready to read at bedtime</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- CTA -->
+          <div class="px-8 pb-8">
+            <button
+              onclick="startCheckout('tiny_tales', this)"
+              class="btn-checkout w-full bg-teal text-navy text-sm font-bold py-4 rounded-2xl hover:bg-teal/90">
+              Get Started — $24.94
+            </button>
+            <p class="text-center text-xs text-gray-400 mt-3">Secure checkout via Stripe · Price excludes tax</p>
+          </div>
+        </div>
+
+        <!-- Card 2: Story Adventures -->
+        <div class="price-card bg-white rounded-3xl shadow-md overflow-hidden flex flex-col relative">
+          <!-- Popular badge -->
+          <div class="absolute top-5 right-6 bg-sunshine text-navy text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wide shadow">
+            Most Popular
+          </div>
+
+          <!-- Header band -->
+          <div class="px-8 pt-8 pb-6" style="background: linear-gradient(135deg, #1a0a2e 0%, #5a2870 100%);">
+            <span class="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4">Ages 3 – 10</span>
+            <h2 class="text-3xl font-extrabold text-white mb-1">Story Adventures</h2>
+            <p class="text-purple-200 text-sm leading-relaxed">A full narrative journey — longer, richer, and ready for the big kids on your shelf.</p>
+            <div class="mt-6 flex items-end gap-1">
+              <span class="text-5xl font-extrabold text-white">$39</span>
+              <span class="text-3xl font-extrabold text-white">.95</span>
+              <span class="text-purple-300 text-sm mb-1 ml-1">+ tax</span>
+            </div>
+          </div>
+
+          <!-- Features -->
+          <div class="px-8 py-7 flex-1">
+            <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-5">What's included</p>
+            <ul class="space-y-4 text-sm text-charcoal">
+              <li class="flex items-start gap-3">
+                <svg class="check-icon w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span><strong>30 illustrated pages</strong> — room for a real adventure to unfold</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="check-icon w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span><strong>Rich, detailed watercolour-style artwork</strong> with dynamic compositions</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="check-icon w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span><strong>Full narrative arc</strong> — beginning, middle, and a satisfying end</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="check-icon w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span><strong>Your child as the hero</strong> — name, friends, and favourite toys woven in</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="check-icon w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span><strong>Richer vocabulary and plot</strong> calibrated for growing readers</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="check-icon w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span><strong>Professionally printed hardcover</strong> — a keepsake for the whole family</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="check-icon w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span><strong>Delivered to your door</strong> — ready to read at bedtime</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- CTA -->
+          <div class="px-8 pb-8">
+            <button
+              onclick="startCheckout('story_adventures', this)"
+              class="btn-checkout w-full bg-plum text-white text-sm font-bold py-4 rounded-2xl hover:bg-plum/90">
+              Get Started — $39.95
+            </button>
+            <p class="text-center text-xs text-gray-400 mt-3">Secure checkout via Stripe · Price excludes tax</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Trust row -->
+      <div class="mt-12 flex flex-wrap justify-center gap-8 text-sm text-gray-500">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-teal" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          Secure checkout via Stripe
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-teal" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+          All major cards accepted
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-teal" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/></svg>
+          Shipped worldwide
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-teal" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          Made with love, every time
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── HOW IT FLOWS ───────────────────────── -->
+  <section class="bg-white py-16 lg:py-20">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-3xl lg:text-4xl font-extrabold text-navy mb-4">From story to shelf in four steps</h2>
+      <p class="text-gray-500 text-lg mb-14">Once you pay, here's exactly what happens next.</p>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 text-left">
+        <div>
+          <div class="w-10 h-10 rounded-full bg-teal/15 flex items-center justify-center mb-4 text-teal font-extrabold text-lg">1</div>
+          <h3 class="font-bold text-navy mb-1">Record</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Your child tells their story — two minutes of imagination is all it takes.</p>
+        </div>
+        <div>
+          <div class="w-10 h-10 rounded-full bg-sunshine/20 flex items-center justify-center mb-4 text-navy font-extrabold text-lg">2</div>
+          <h3 class="font-bold text-navy mb-1">Create</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">We transcribe, shape the narrative, and generate one-of-a-kind illustrations.</p>
+        </div>
+        <div>
+          <div class="w-10 h-10 rounded-full bg-plum/15 flex items-center justify-center mb-4 text-plum font-extrabold text-lg">3</div>
+          <h3 class="font-bold text-navy mb-1">Print</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Your book is professionally printed and bound into a beautiful hardcover.</p>
+        </div>
+        <div>
+          <div class="w-10 h-10 rounded-full bg-tangerine/15 flex items-center justify-center mb-4 text-tangerine font-extrabold text-lg">4</div>
+          <h3 class="font-bold text-navy mb-1">Deliver</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">It arrives at your door — ready to become a favourite at bedtime.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── FAQ ───────────────────────── -->
+  <section class="bg-blue-tint py-16 lg:py-20">
+    <div class="max-w-3xl mx-auto px-6">
+      <h2 class="text-3xl font-extrabold text-navy mb-10 text-center">Common questions</h2>
+      <div class="space-y-6">
+        <details class="bg-white rounded-2xl px-6 py-5 shadow-sm group">
+          <summary class="font-bold text-navy cursor-pointer list-none flex justify-between items-center">
+            Which book should I choose?
+            <svg class="w-4 h-4 text-teal group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-3 text-sm text-gray-600 leading-relaxed">If your child is 2 or under, Tiny Tales is perfect — shorter pages, bolder art, and simpler language designed for early readers. For ages 3 and up, Story Adventures gives the story room to breathe with a full plot arc and richer illustrations.</p>
+        </details>
+        <details class="bg-white rounded-2xl px-6 py-5 shadow-sm group">
+          <summary class="font-bold text-navy cursor-pointer list-none flex justify-between items-center">
+            How long does delivery take?
+            <svg class="w-4 h-4 text-teal group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-3 text-sm text-gray-600 leading-relaxed">Books typically take 5–7 business days to produce and print, plus shipping time. You'll receive a tracking link as soon as your order ships.</p>
+        </details>
+        <details class="bg-white rounded-2xl px-6 py-5 shadow-sm group">
+          <summary class="font-bold text-navy cursor-pointer list-none flex justify-between items-center">
+            What if I'm not happy with the result?
+            <svg class="w-4 h-4 text-teal group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-3 text-sm text-gray-600 leading-relaxed">We stand behind every book we make. If the result doesn't meet your expectations, reach out to our team and we'll make it right — no questions asked.</p>
+        </details>
+        <details class="bg-white rounded-2xl px-6 py-5 shadow-sm group">
+          <summary class="font-bold text-navy cursor-pointer list-none flex justify-between items-center">
+            Is payment secure?
+            <svg class="w-4 h-4 text-teal group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-3 text-sm text-gray-600 leading-relaxed">Yes. All payments are processed through Stripe, one of the world's most trusted payment platforms. We never store your card details — Stripe handles everything securely.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── FOOTER ───────────────────────── -->
+  <footer class="bg-navy text-white">
+    <div class="max-w-6xl mx-auto px-6 py-12 lg:py-16">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+        <div class="col-span-2 md:col-span-1">
+          <p class="text-2xl font-extrabold mb-3">Babbel<span class="text-teal">Books</span></p>
+          <p class="text-blue-200 text-sm leading-relaxed max-w-xs">Empowering young authors and artists — one bedtime story at a time.</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-widest text-blue-200 mb-4">Product</h4>
+          <ul class="space-y-2 text-sm text-blue-100">
+            <li><a href="index.html#how-it-works" class="hover:text-white transition-colors">How It Works</a></li>
+            <li><a href="index.html#age-guide"     class="hover:text-white transition-colors">Age Guide</a></li>
+            <li><a href="samples.html"             class="hover:text-white transition-colors">Sample Books</a></li>
+            <li><a href="pricing.html"             class="hover:text-white transition-colors">Pricing</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-widest text-blue-200 mb-4">Company</h4>
+          <ul class="space-y-2 text-sm text-blue-100">
+            <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-widest text-blue-200 mb-4">Legal</h4>
+          <ul class="space-y-2 text-sm text-blue-100">
+            <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-blue-300 text-sm">© 2026 Babbel Books. All rights reserved.</p>
+        <div class="flex items-center gap-4">
+          <a href="https://www.instagram.com/babbelbooks" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="X / Twitter" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.845L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="TikTok" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.73a4.85 4.85 0 01-1.01-.04z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ───────────────────────── JS ───────────────────────── -->
+  <script>
+    // Mobile nav
+    function toggleMobileNav() {
+      document.getElementById('mobile-nav').classList.toggle('hidden');
+    }
+    function closeMobileNav() {
+      document.getElementById('mobile-nav').classList.add('hidden');
+    }
+    window.addEventListener('scroll', function() {
+      document.getElementById('mobile-nav').classList.add('hidden');
+    }, { passive: true });
+
+    // Stripe checkout
+    async function startCheckout(plan, btn) {
+      btn.disabled = true;
+      var original = btn.textContent;
+      btn.textContent = 'Redirecting to checkout…';
+
+      try {
+        var res = await fetch('/api/create-checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ plan: plan })
+        });
+        var data = await res.json();
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          throw new Error(data.error || 'Checkout unavailable');
+        }
+      } catch (err) {
+        alert('Something went wrong: ' + err.message + '\n\nPlease try again or contact us.');
+        btn.disabled = false;
+        btn.textContent = original;
+      }
+    }
+  </script>
+
+</body>
+</html>

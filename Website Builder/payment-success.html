@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Order Confirmed — Babbel Books</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'navy': '#1B2D6B', 'navy-dark': '#131C66',
+            'teal': '#60CBC2', 'sunshine': '#FEDB00',
+            'charcoal': '#2B2B2B',
+          },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+        },
+      },
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    @keyframes popIn {
+      0%   { transform: scale(0.6); opacity: 0; }
+      70%  { transform: scale(1.1); }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+    .pop-in { animation: popIn 0.55s ease forwards; }
+  </style>
+</head>
+<body class="font-sans text-charcoal bg-white">
+
+  <nav class="bg-white border-b border-gray-100">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center">
+      <a href="index.html" class="text-2xl font-extrabold text-navy tracking-tight">Babbel<span class="text-teal">Books</span></a>
+    </div>
+  </nav>
+
+  <div class="min-h-[80vh] flex items-center justify-center px-6 py-20">
+    <div class="max-w-lg w-full text-center">
+
+      <!-- Animated checkmark -->
+      <div class="pop-in mx-auto mb-8 w-24 h-24 rounded-full bg-teal/15 flex items-center justify-center">
+        <svg class="w-12 h-12 text-teal" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+
+      <h1 class="text-4xl font-extrabold text-navy mb-4">Your book is on its way!</h1>
+      <p class="text-gray-500 text-lg leading-relaxed mb-8">
+        Thank you for your order. We're already busy turning your child's story into something extraordinary. You'll receive an email confirmation shortly, and a tracking link once your book ships.
+      </p>
+
+      <div class="bg-blue-50 rounded-2xl px-8 py-6 text-left mb-10 text-sm text-gray-600 space-y-2">
+        <p class="font-bold text-navy mb-3">What happens next</p>
+        <p>📖 &nbsp;We craft and illustrate your personalised story</p>
+        <p>🖨️ &nbsp;Your book is professionally printed as a hardcover</p>
+        <p>📦 &nbsp;We ship it directly to your door (5–7 business days)</p>
+        <p>✉️ &nbsp;You'll get a tracking link as soon as it leaves the printer</p>
+      </div>
+
+      <a href="index.html"
+         class="inline-flex items-center gap-2 bg-navy text-white text-sm font-bold px-8 py-4 rounded-full hover:bg-navy-dark transition-colors">
+        Back to Babbel Books
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>

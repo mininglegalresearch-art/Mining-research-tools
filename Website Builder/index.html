@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Babbel Books — Empower Your Child's Inner Author</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'navy':      '#1B2D6B',
+            'navy-dark': '#131C66',
+            'blue-tint': '#EEF3FF',
+            'off-white': '#FAF9F6',
+            'charcoal':  '#2B2B2B',
+            'teal':      '#60CBC2',
+            'sunshine':  '#FEDB00',
+            'plum':      '#B85BBF',
+            'lime':      '#BBDC00',
+            'tangerine': '#FF9955',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    html { scroll-behavior: smooth; }
+
+    /* ── Cascade text animation ── */
+    @keyframes cascadeIn {
+      from { opacity: 0; transform: translateX(-24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .cascade-line {
+      display: block;
+      opacity: 0;
+      animation: cascadeIn 0.55s ease forwards;
+      transition: color 0.8s ease;
+    }
+
+    /* Colored bar divider (mirrors Lovevery's decorative bars) */
+    .color-bars {
+      height: 14px;
+      background: linear-gradient(
+        to right,
+        #60CBC2 0% 20%,
+        #FEDB00 20% 40%,
+        #B85BBF 40% 60%,
+        #BBDC00 60% 80%,
+        #FF9955 80% 100%
+      );
+    }
+
+    /* Drag-and-drop zone */
+    #drop-zone {
+      border: 2.5px dashed #1B2D6B;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+    #drop-zone.drag-over {
+      background-color: #EEF3FF;
+      border-color: #60CBC2;
+    }
+
+    /* Step connector dots */
+    .step-dot {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    /* Smooth file status transition */
+    #file-status { transition: opacity 0.3s; }
+
+    /* ── Mobile nav menu ── */
+    #mobile-nav a { transition: color 0.15s; }
+
+    /* ── Mobile feature section overrides (< 1024px) ── */
+    @media (max-width: 1023px) {
+      /* Hero: hide side image and its gradient on mobile */
+      .hero-bg-img   { display: none !important; }
+      .hero-bg-grad  { display: none !important; }
+
+      /* Feature section 1: video flows as block header */
+      #samples { min-height: 0 !important; }
+      #feature-video {
+        position: relative !important;
+        top: auto !important; right: auto !important;
+        width: 100% !important;
+        height: 340px !important;
+        opacity: 1 !important;
+        display: block;
+      }
+      .feat1-grad, .feat1-fade { display: none !important; }
+      #feature-mute-btn { top: 10px !important; right: 10px !important; }
+
+      /* Feature section 2: video flows as block header */
+      .feat2-section { min-height: 0 !important; }
+      #feature-video-2 {
+        position: relative !important;
+        top: auto !important; left: auto !important;
+        width: 100% !important;
+        height: 340px !important;
+        opacity: 1 !important;
+        display: block;
+      }
+      .feat2-grad, .feat2-fade { display: none !important; }
+      #feature-mute-btn-2 { top: 10px !important; left: 10px !important; }
+    }
+  </style>
+</head>
+<body class="font-sans text-charcoal bg-white">
+
+  <!-- ───────────────────────── NAV ───────────────────────── -->
+  <nav class="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2">
+        <span class="text-2xl font-extrabold text-navy tracking-tight">Babbel
+          <span class="text-teal">Books</span>
+        </span>
+      </a>
+
+      <!-- Nav links (desktop) -->
+      <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-charcoal">
+        <a href="#how-it-works" class="hover:text-navy transition-colors">How It Works</a>
+        <a href="#age-guide"     class="hover:text-navy transition-colors">Age Guide</a>
+        <a href="samples.html"       class="hover:text-navy transition-colors">Samples</a>
+        <a href="pricing.html"       class="hover:text-navy transition-colors">Pricing</a>
+        <a href="about.html"         class="hover:text-navy transition-colors">About Us</a>
+      </div>
+
+      <!-- CTA -->
+      <a href="#upload"
+         class="hidden md:inline-flex items-center gap-2 bg-navy text-white text-sm font-bold px-5 py-2.5 rounded-full hover:bg-navy-dark transition-colors">
+        Create Your Book
+      </a>
+
+      <button onclick="toggleMobileNav()" id="hamburger-btn" class="md:hidden p-2 text-navy" aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  <!-- Mobile nav drawer -->
+  <div id="mobile-nav" class="hidden md:hidden bg-white border-b border-gray-100">
+    <div class="px-6 py-4 space-y-1">
+      <a href="#how-it-works" onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">How It Works</a>
+      <a href="#age-guide"     onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">Age Guide</a>
+      <a href="samples.html"       onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">Samples</a>
+      <a href="pricing.html"       onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">Pricing</a>
+      <a href="about.html"         onclick="closeMobileNav()" class="block text-sm font-semibold text-charcoal hover:text-navy py-2 border-b border-gray-50">About Us</a>
+      <a href="#upload"        onclick="closeMobileNav()" class="block mt-3 bg-navy text-white text-sm font-bold px-5 py-3 rounded-full text-center hover:bg-navy-dark transition-colors">Create Your Book</a>
+    </div>
+  </div>
+  </nav>
+
+  <!-- ───────────────────────── SCROLL-STOP VIDEO ───────────────────────── -->
+  <section class="relative w-full overflow-hidden bg-navy" style="height: 85vh;">
+    <!-- Video -->
+    <video
+      id="hero-video"
+      src="Animantion Video.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+      class="absolute inset-0 w-full h-full object-cover"
+    ></video>
+
+    <!-- Overlay gradient + text -->
+    <div id="hero-overlay" class="absolute inset-0 flex flex-col items-start justify-end pb-12 sm:pb-16 px-6 sm:px-12 lg:px-20">
+      <div class="mb-6 py-4 sm:py-5 pr-6 sm:pr-10 pl-2 rounded-2xl inline-block" style="background: rgba(200,210,225,0.13); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);">
+        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-snug text-left">
+          <span class="cascade-line" style="padding-left:0;       animation-delay:0.1s;">Unlock</span>
+          <span class="cascade-line" style="padding-left:1.4rem;  animation-delay:0.28s;">your</span>
+          <span class="cascade-line" style="padding-left:2.8rem;  animation-delay:0.46s;">child's</span>
+          <span class="cascade-line" style="padding-left:4.2rem;  animation-delay:0.64s;">imagination</span>
+        </h2>
+      </div>
+      <a href="#upload"
+         class="inline-flex items-center gap-2 bg-white text-navy text-sm font-bold px-7 py-3.5 rounded-full hover:bg-sunshine transition-colors">
+        Create Your Book →
+      </a>
+    </div>
+
+    <!-- Unmute button -->
+    <button
+      id="mute-btn"
+      onclick="toggleMute()"
+      class="absolute top-5 right-5 flex items-center gap-2 bg-black/40 backdrop-blur-sm text-white text-xs font-semibold px-4 py-2 rounded-full border border-white/20 hover:bg-black/60 transition-colors"
+    >
+      <svg id="icon-muted" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707A1 1 0 0112 5v14a1 1 0 01-1.707.707L5.586 15z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+      </svg>
+      <svg id="icon-sound" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 6v12m-6.364-1.636A9 9 0 0112 3"/>
+      </svg>
+      <span id="mute-label">Unmute</span>
+    </button>
+  </section>
+
+  <!-- ───────────────────────── HERO ───────────────────────── -->
+  <section class="relative bg-navy overflow-hidden">
+    <!-- Background image — covers right 55%, fades into navy on the left -->
+    <img src="WebImage - Parent Guiding.jpeg" alt=""
+         class="hero-bg-img absolute top-0 right-0 h-full object-cover pointer-events-none"
+         style="width: 55%; opacity: 0.85;" />
+    <!-- Gradient: solid navy past image edge (45%), then smooth fade across image -->
+    <div class="hero-bg-grad absolute inset-0 pointer-events-none" style="background: linear-gradient(to right, #1B2D6B 0%, #1B2D6B 45%, rgba(27,45,107,0.94) 53%, rgba(27,45,107,0.74) 60%, rgba(27,45,107,0.45) 67%, rgba(27,45,107,0.18) 74%, transparent 82%);"></div>
+    <!-- Background gradient blob (keep subtle colour wash) -->
+    <div class="absolute inset-0 opacity-20 pointer-events-none"
+         style="background: radial-gradient(ellipse at 70% 50%, #60CBC2 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, #FEDB00 0%, transparent 50%);">
+    </div>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-6 py-16 lg:py-24 lg:flex lg:items-center lg:gap-16">
+      <!-- Left: headline + upload -->
+      <div class="lg:w-1/2 text-center lg:text-left">
+        <p class="inline-block bg-teal/20 text-teal text-sm font-semibold px-4 py-1 rounded-full mb-6 tracking-wide uppercase">
+          Empower Your Child's Inner Author
+        </p>
+        <h1 class="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white leading-tight mb-6">
+          Your child's story.<br/>
+          <span class="text-teal">In their own words.</span>
+        </h1>
+        <p class="text-blue-100 text-lg lg:text-xl mb-6 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+          Record two minutes of your child telling a story. Our software transcribes it, shapes it into a beautiful narrative, and illustrates it — a one-of-a-kind book made just for them.
+        </p>
+        <p class="text-blue-100 text-lg lg:text-xl mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+          Then we bring it to life as a beautifully printed hardcover — and deliver it straight to your door.
+        </p>
+
+        <!-- Upload zone -->
+        <div id="upload">
+          <div id="drop-zone"
+               class="bg-white/5 rounded-2xl p-8 cursor-pointer text-center"
+               onclick="document.getElementById('audio-input').click()"
+               ondragover="handleDragOver(event)"
+               ondragleave="handleDragLeave(event)"
+               ondrop="handleDrop(event)">
+            <input type="file" id="audio-input" accept="audio/*" class="hidden" onchange="handleFileSelect(event)" />
+            <div class="flex flex-col items-center gap-3">
+              <div class="w-16 h-16 rounded-full bg-teal/20 flex items-center justify-center">
+                <!-- Waveform / mic icon -->
+                <svg class="w-8 h-8 text-teal" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                </svg>
+              </div>
+              <p id="file-status" class="text-white font-semibold text-lg">
+                Tap or drop your audio file
+              </p>
+              <p class="text-blue-200 text-sm">MP3, M4A, WAV, AAC accepted</p>
+              <p class="text-blue-300 text-xs mt-1">Ideal length: 2 – 3 minutes</p>
+            </div>
+          </div>
+
+          <!-- ── Child Profile Form (shown after audio is selected) ── -->
+          <div id="profile-form" class="hidden mt-6 bg-white/8 backdrop-blur-sm rounded-2xl p-6 border border-white/10 space-y-4">
+            <p class="text-teal text-xs font-semibold uppercase tracking-widest mb-1">Tell us about your child</p>
+
+            <!-- Row 1: Name + Age -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label for="child-name" class="block text-blue-200 text-xs font-semibold mb-1.5">
+                  What's your child's name? <span class="text-teal">*</span>
+                </label>
+                <input id="child-name" type="text" placeholder="e.g. Mia"
+                       oninput="updateCreateBtn()"
+                       class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2.5 text-white text-sm placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-teal/50 focus:border-teal/50 transition" />
+              </div>
+              <div>
+                <label for="child-age-input" class="block text-blue-200 text-xs font-semibold mb-1.5">
+                  How old are they? <span class="text-teal">*</span>
+                </label>
+                <input id="child-age-input" type="number" min="0" max="12" placeholder="e.g. 4"
+                       oninput="updateCreateBtn()"
+                       class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2.5 text-white text-sm placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-teal/50 focus:border-teal/50 transition" />
+              </div>
+            </div>
+
+            <!-- Row 2: Gender -->
+            <div>
+              <label class="block text-blue-200 text-xs font-semibold mb-2">Are they a...</label>
+              <div class="flex gap-2 flex-wrap">
+                <button type="button" data-gender="girl"
+                        onclick="selectGender('girl')"
+                        class="gender-btn px-4 py-2 rounded-full text-sm font-semibold border border-white/20 text-blue-200 hover:bg-white/10 transition">
+                  Girl
+                </button>
+                <button type="button" data-gender="boy"
+                        onclick="selectGender('boy')"
+                        class="gender-btn px-4 py-2 rounded-full text-sm font-semibold border border-white/20 text-blue-200 hover:bg-white/10 transition">
+                  Boy
+                </button>
+                <button type="button" data-gender="neutral"
+                        onclick="selectGender('neutral')"
+                        class="gender-btn px-4 py-2 rounded-full text-sm font-semibold border border-white/20 text-blue-200 hover:bg-white/10 transition">
+                  Prefer not to say
+                </button>
+              </div>
+            </div>
+
+            <!-- Row 3: Friends -->
+            <div>
+              <label for="child-friends" class="block text-blue-200 text-xs font-semibold mb-1.5">
+                Any favourite friends we should include?
+                <span class="text-blue-400 font-normal ml-1">optional</span>
+              </label>
+              <input id="child-friends" type="text" placeholder="e.g. Leo, Sofia, Maya"
+                     class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2.5 text-white text-sm placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-teal/50 focus:border-teal/50 transition" />
+              <p class="text-blue-400 text-xs mt-1">Separate names with commas</p>
+            </div>
+
+            <!-- Row 4: Toys / stuffies -->
+            <div>
+              <label for="child-toys" class="block text-blue-200 text-xs font-semibold mb-1.5">
+                Any favourite toys or stuffies to include?
+                <span class="text-blue-400 font-normal ml-1">optional</span>
+              </label>
+              <input id="child-toys" type="text" placeholder="e.g. Bunny, Robo, Mr Bear"
+                     class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2.5 text-white text-sm placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-teal/50 focus:border-teal/50 transition" />
+              <p class="text-blue-400 text-xs mt-1">Separate names with commas</p>
+            </div>
+          </div>
+
+          <div class="mt-5 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+            <button id="create-btn" onclick="handleCreate()"
+                    class="w-full sm:w-auto flex items-center justify-center gap-2 bg-sunshine text-navy text-base font-bold px-8 py-3.5 rounded-full hover:brightness-95 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                    disabled>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+              </svg>
+              Create My Book
+            </button>
+            <a href="#how-it-works" class="text-blue-200 text-sm font-semibold hover:text-white transition-colors underline underline-offset-4">
+              See how it works ↓
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right half: empty spacer — image fills this area through the gradient -->
+      <div class="lg:w-1/2"></div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── COLOR BARS ───────────────────────── -->
+  <div class="color-bars w-full"></div>
+
+  <!-- ───────────────────────── HOW IT WORKS ───────────────────────── -->
+  <section id="how-it-works" class="bg-white py-16 lg:py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl lg:text-4xl font-extrabold text-navy text-center mb-4">
+        From two minutes of audio<br/>to a book they'll treasure forever
+      </h2>
+      <p class="text-center text-gray-500 text-lg mb-14 max-w-xl mx-auto">
+        You just hit record — we handle everything else, from illustration to a professionally published children's book delivered to your door.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-10">
+        <!-- Step 1 -->
+        <div class="flex flex-col items-center text-center gap-4">
+          <img src="assets/images/step_record.png" alt="Child recording a story"
+               class="w-32 h-32 rounded-full object-cover shadow-lg border-4 border-teal/30" />
+          <div class="step-dot bg-teal">1</div>
+          <h3 class="text-xl font-bold text-navy">Record</h3>
+          <p class="text-gray-500 leading-relaxed">
+            Your child tells a story — anything from a wild adventure to a dream they had. 2–3 minutes is all it takes. Use voice memos, a phone mic, anything.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flex flex-col items-center text-center gap-4">
+          <img src="assets/images/step_upload.png" alt="Upload audio to Babbel Books"
+               class="w-32 h-32 rounded-full object-cover shadow-lg border-4 border-plum/30" />
+          <div class="step-dot bg-plum">2</div>
+          <h3 class="text-xl font-bold text-navy">Upload</h3>
+          <p class="text-gray-500 leading-relaxed">
+            Drop your audio file onto Babbel Books. Our internal software transcribes the recording and shapes it into a polished narrative — keeping every quirky detail intact.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flex flex-col items-center text-center gap-4">
+          <img src="assets/images/step_book.png" alt="Receive your finished illustrated book"
+               class="w-32 h-32 rounded-full object-cover shadow-lg border-4 border-tangerine/30" />
+          <div class="step-dot bg-tangerine">3</div>
+          <h3 class="text-xl font-bold text-navy">Receive Your Book</h3>
+          <p class="text-gray-500 leading-relaxed">
+            We create custom full-color illustrations matched to the story, professionally publish it as a hardcover children's book, and deliver it straight to your door.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── COLOR BARS ───────────────────────── -->
+  <div class="color-bars w-full"></div>
+
+  <!-- ───────────────────────── AGE GUIDE ───────────────────────── -->
+  <section id="age-guide" class="bg-white py-16 lg:py-20">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl lg:text-4xl font-extrabold text-navy text-center mb-3">
+        Stories for every age
+      </h2>
+      <p class="text-center text-gray-500 text-lg mb-12 max-w-lg mx-auto">
+        From first words to chapter-length epics — Babbel Books grows with your child.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+
+        <!-- Young Tots (0–2) -->
+        <a href="#upload" class="flex flex-col items-center gap-4 text-center group">
+          <div class="relative">
+            <div class="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-36 h-36 rounded-full bg-teal/20 group-hover:bg-teal/35 transition-colors"></div>
+            <img src="assets/images/age_young_tots.jpeg" alt="Baby reading a glowing board book"
+                 class="relative z-10 w-28 h-28 rounded-full object-cover mx-auto shadow-md ring-4 ring-white" />
+          </div>
+          <div>
+            <p class="text-teal text-xs font-semibold uppercase tracking-widest mb-1">Ages 0 – 2</p>
+            <p class="font-extrabold text-navy text-lg leading-tight">Young Tots</p>
+          </div>
+          <div class="space-y-1 text-sm text-gray-500 leading-snug">
+            <p>Simple, soothing stories with short sentences and gentle repetition</p>
+            <p>Bold, high-contrast illustrations — easy for young eyes to follow</p>
+          </div>
+          <span class="text-teal text-xs font-semibold group-hover:underline">Start their first book →</span>
+        </a>
+
+        <!-- Young Readers (3–5) -->
+        <a href="#upload" class="flex flex-col items-center gap-4 text-center group">
+          <div class="relative">
+            <div class="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-36 h-36 rounded-full bg-sunshine/30 group-hover:bg-sunshine/50 transition-colors"></div>
+            <img src="assets/images/age_young_readers.jpeg" alt="Young child reading a magical picture book"
+                 class="relative z-10 w-28 h-28 rounded-full object-cover mx-auto shadow-md ring-4 ring-white" />
+          </div>
+          <div>
+            <p class="text-teal text-xs font-semibold uppercase tracking-widest mb-1">Ages 3 – 5</p>
+            <p class="font-extrabold text-navy text-lg leading-tight">Young Readers</p>
+          </div>
+          <div class="space-y-1 text-sm text-gray-500 leading-snug">
+            <p>Imaginative stories with real characters, wonder, and a satisfying ending</p>
+            <p>Warm, painterly watercolour illustrations with expressive faces</p>
+          </div>
+          <span class="text-teal text-xs font-semibold group-hover:underline">Bring their story to life →</span>
+        </a>
+
+        <!-- Post-Toddler Readers (6–10) -->
+        <a href="#upload" class="flex flex-col items-center gap-4 text-center group">
+          <div class="relative">
+            <div class="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-36 h-36 rounded-full bg-plum/20 group-hover:bg-plum/35 transition-colors"></div>
+            <img src="assets/images/age_post_toddler.jpeg" alt="Older child reading an adventure book with magic bursting from the pages"
+                 class="relative z-10 w-28 h-28 rounded-full object-cover mx-auto shadow-md ring-4 ring-white" />
+          </div>
+          <div>
+            <p class="text-plum text-xs font-semibold uppercase tracking-widest mb-1">Ages 6 – 10</p>
+            <p class="font-extrabold text-navy text-lg leading-tight">Post-Toddler Readers</p>
+          </div>
+          <div class="space-y-1 text-sm text-gray-500 leading-snug">
+            <p>Adventurous, structured stories with real plot, humour, and earned heroes</p>
+            <p>Detailed, dynamic illustrations with rich scenes that reward a long look</p>
+          </div>
+          <span class="text-plum text-xs font-semibold group-hover:underline">Start their adventure →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── AGE TAILORING EXPLAINER ───────────────────────── -->
+  <section id="age-tailoring" class="bg-navy py-16 lg:py-24">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <div class="text-center mb-14">
+        <p class="inline-block bg-teal/20 text-teal text-sm font-semibold px-4 py-1 rounded-full mb-5 tracking-wide uppercase">
+          Personalised for every stage
+        </p>
+        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight mb-4">
+          How Babbel Books tailors<br/>your child's story
+        </h2>
+        <p class="text-blue-200 text-lg max-w-2xl mx-auto leading-relaxed">
+          Every book we create is shaped around your child's age — from the words we use to the illustrations we make. Here's how it works.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+
+        <!-- Young Tots -->
+        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 flex flex-col gap-4">
+          <div class="flex items-center gap-3 mb-1">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-xl flex-shrink-0" style="background: rgba(96,203,194,0.2);">
+              🌙
+            </div>
+            <div>
+              <p class="text-teal text-xs font-semibold uppercase tracking-wider">Ages 0 – 2</p>
+              <h3 class="text-white font-extrabold text-lg leading-tight">Young Tots</h3>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-start gap-3">
+              <div class="w-5 h-5 rounded-full bg-teal/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3 h-3 text-teal" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div>
+                <p class="text-white text-sm font-semibold">Simple, soothing stories</p>
+                <p class="text-blue-300 text-sm leading-snug">Short sentences, gentle repetition, and warm emotional moments — perfect for reading aloud at bedtime.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-5 h-5 rounded-full bg-teal/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3 h-3 text-teal" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div>
+                <p class="text-white text-sm font-semibold">Bright, bold illustrations</p>
+                <p class="text-blue-300 text-sm leading-snug">High-contrast colours, large simple shapes, and a single character per page — easy for young eyes to follow.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-5 h-5 rounded-full bg-teal/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3 h-3 text-teal" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div>
+                <p class="text-white text-sm font-semibold">A keepsake from day one</p>
+                <p class="text-blue-300 text-sm leading-snug">Even toddlers have stories in them. We capture that first precious voice and turn it into something they'll grow up reading.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Young Readers -->
+        <div class="rounded-2xl p-8 border flex flex-col gap-4" style="background: rgba(254,219,0,0.07); border-color: rgba(254,219,0,0.2);">
+          <div class="flex items-center gap-3 mb-1">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-xl flex-shrink-0" style="background: rgba(254,219,0,0.15);">
+              ✨
+            </div>
+            <div>
+              <p class="text-teal text-xs font-semibold uppercase tracking-wider">Ages 3 – 5</p>
+              <h3 class="text-white font-extrabold text-lg leading-tight">Young Readers</h3>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-start gap-3">
+              <div class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style="background: rgba(254,219,0,0.2);">
+                <svg class="w-3 h-3 text-teal" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div>
+                <p class="text-white text-sm font-semibold">Imaginative, character-driven stories</p>
+                <p class="text-blue-300 text-sm leading-snug">A real beginning, middle, and end — with heroes, gentle adventures, and satisfying resolutions that feel magical.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style="background: rgba(254,219,0,0.2);">
+                <svg class="w-3 h-3 text-teal" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div>
+                <p class="text-white text-sm font-semibold">Warm, expressive illustrations</p>
+                <p class="text-blue-300 text-sm leading-snug">Painterly watercolour spreads with expressive faces, cosy environments, and a gently magical atmosphere.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style="background: rgba(254,219,0,0.2);">
+                <svg class="w-3 h-3 text-teal" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div>
+                <p class="text-white text-sm font-semibold">Friends and toys, written in</p>
+                <p class="text-blue-300 text-sm leading-snug">Tell us their best friend's name or favourite stuffy — we'll write them into the story as real characters.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Post-Toddler Readers -->
+        <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 flex flex-col gap-4">
+          <div class="flex items-center gap-3 mb-1">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-xl flex-shrink-0" style="background: rgba(184,91,191,0.2);">
+              🚀
+            </div>
+            <div>
+              <p class="text-plum text-xs font-semibold uppercase tracking-wider" style="color:#c97fd1;">Ages 6 – 10</p>
+              <h3 class="text-white font-extrabold text-lg leading-tight">Post-Toddler Readers</h3>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-start gap-3">
+              <div class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style="background: rgba(184,91,191,0.2);">
+                <svg class="w-3 h-3" style="color:#c97fd1;" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div>
+                <p class="text-white text-sm font-semibold">More adventurous stories</p>
+                <p class="text-blue-300 text-sm leading-snug">A structured plot with real stakes, humour, clever twists, and a hero who earns their victory — every time.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style="background: rgba(184,91,191,0.2);">
+                <svg class="w-3 h-3" style="color:#c97fd1;" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div>
+                <p class="text-white text-sm font-semibold">Richer scenes and detail</p>
+                <p class="text-blue-300 text-sm leading-snug">Dynamic compositions with world-building, bold colour, and characters full of personality — illustrations that reward a long look.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style="background: rgba(184,91,191,0.2);">
+                <svg class="w-3 h-3" style="color:#c97fd1;" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div>
+                <p class="text-white text-sm font-semibold">Illustrations that fuel imagination</p>
+                <p class="text-blue-300 text-sm leading-snug">Art that goes beyond the words on the page — inviting older kids to look closer, imagine more, and read it again.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /grid -->
+
+      <p class="text-center text-blue-300 text-sm mt-10">
+        Just tell us your child's age when you upload — we handle the rest.
+        <a href="#upload" class="text-teal font-semibold hover:text-white transition-colors ml-1">Start now →</a>
+      </p>
+
+    </div>
+  </section>
+
+  <!-- ───────────────────────── FEATURE: VOICE TO STORY ───────────────────────── -->
+  <section id="samples" class="relative overflow-hidden" style="background: linear-gradient(135deg, #0d1f2d 0%, #1B2D6B 50%, #0f2318 100%); min-height: 580px;">
+    <!-- Background video — covers right 55% so its center sits in the center of the visible area -->
+    <video
+      id="feature-video"
+      src="Animation Video 2.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+      class="absolute top-0 right-0 h-full object-cover"
+      style="width: 55%; opacity: 0.72;"
+    ></video>
+    <!-- Gradient: solid past video edge (45%), then fades smoothly across the video -->
+    <div class="feat1-grad absolute inset-0 pointer-events-none" style="background: linear-gradient(to right, #0d1f2d 0%, #0d1f2d 45%, rgba(13,31,45,0.94) 53%, rgba(13,31,45,0.74) 60%, rgba(13,31,45,0.45) 67%, rgba(13,31,45,0.18) 74%, transparent 82%);"></div>
+    <!-- Bottom fade to ground the section -->
+    <div class="feat1-fade absolute bottom-0 left-0 right-0 pointer-events-none" style="height: 160px; background: linear-gradient(to bottom, transparent, #0f2318);"></div>
+    <!-- Unmute button (top-right, over the video) -->
+    <button
+      id="feature-mute-btn"
+      onclick="toggleFeatureMute()"
+      class="absolute top-5 right-5 z-20 flex items-center gap-2 bg-black/40 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/20 hover:bg-black/60 transition-colors"
+    >
+      <svg id="feature-icon-muted" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707A1 1 0 0112 5v14a1 1 0 01-1.707.707L5.586 15z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+      </svg>
+      <svg id="feature-icon-sound" class="w-3.5 h-3.5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 6v12m-6.364-1.636A9 9 0 0112 3"/>
+      </svg>
+      <span id="feature-mute-label">Unmute</span>
+    </button>
+    <!-- Content layer -->
+    <div class="relative z-10 max-w-6xl mx-auto px-6 py-16 lg:py-24">
+      <div class="lg:flex lg:items-center lg:gap-16">
+        <!-- Text (left half — sits over solid gradient) -->
+        <div class="lg:w-1/2 mb-10 lg:mb-0">
+          <p class="inline-block text-teal font-semibold text-sm uppercase tracking-widest mb-4">Step 1 — Capture</p>
+          <h2 class="text-3xl lg:text-4xl font-extrabold text-white leading-tight mb-6">
+            Empower their inner author —<br/><span style="color:#60CBC2;">every word, exactly as they told it</span>
+          </h2>
+          <div class="space-y-5 mb-8">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-teal flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-bold text-white text-base">Preserves their voice</p>
+                <p class="text-blue-200 text-sm mt-0.5">We keep the real words, the pauses, the invented names. The book sounds like <em>them</em>.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-plum flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-bold text-white text-base">Any device, any format</p>
+                <p class="text-blue-200 text-sm mt-0.5">Voice memos, WhatsApp voice notes, MP3 — if it plays, it works.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-tangerine flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-bold text-white text-base">The perfect bedtime story</p>
+                <p class="text-blue-200 text-sm mt-0.5">Read it together at bedtime — a deeply personal story your child wrote themselves, shared between parent and child.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Right half: empty — video fills this area through the gradient -->
+        <div class="lg:w-1/2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── FEATURE: ILLUSTRATIONS ───────────────────────── -->
+  <section class="feat2-section relative overflow-hidden bg-white" style="min-height: 580px;">
+    <!-- Background video — covers left 55% so its center sits in the center of the visible area -->
+    <video
+      id="feature-video-2"
+      src="Animation Video 3.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+      class="absolute top-0 left-0 h-full object-cover"
+      style="width: 55%; opacity: 0.72;"
+    ></video>
+    <!-- Gradient: solid past video edge (45%), then fades smoothly across the video -->
+    <div class="feat2-grad absolute inset-0 pointer-events-none" style="background: linear-gradient(to left, white 0%, white 45%, rgba(255,255,255,0.94) 53%, rgba(255,255,255,0.74) 60%, rgba(255,255,255,0.45) 67%, rgba(255,255,255,0.18) 74%, transparent 82%);"></div>
+    <!-- Bottom fade -->
+    <div class="feat2-fade absolute bottom-0 left-0 right-0 pointer-events-none" style="height: 160px; background: linear-gradient(to bottom, transparent, white);"></div>
+    <!-- Unmute button (top-left, over the video side) -->
+    <button
+      id="feature-mute-btn-2"
+      onclick="toggleFeatureMute2()"
+      class="absolute top-5 left-5 z-20 flex items-center gap-2 bg-black/40 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/20 hover:bg-black/60 transition-colors"
+    >
+      <svg id="feature-icon-muted-2" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707A1 1 0 0112 5v14a1 1 0 01-1.707.707L5.586 15z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+      </svg>
+      <svg id="feature-icon-sound-2" class="w-3.5 h-3.5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 6v12m-6.364-1.636A9 9 0 0112 3"/>
+      </svg>
+      <span id="feature-mute-label-2">Unmute</span>
+    </button>
+    <!-- Content layer -->
+    <div class="relative z-10 max-w-6xl mx-auto px-6 py-16 lg:py-24">
+      <div class="lg:flex lg:items-center lg:gap-16">
+        <!-- Left half: empty — video fills this area through the gradient -->
+        <div class="hidden lg:block lg:w-1/2"></div>
+        <!-- Text (right half — sits over solid gradient) -->
+        <div class="lg:w-1/2 mb-10 lg:mb-0">
+          <p class="inline-block text-navy font-semibold text-sm uppercase tracking-widest mb-4">Step 2 — Illustrate</p>
+          <h2 class="text-3xl lg:text-4xl font-extrabold text-navy leading-tight mb-6">
+            Empower their inner artist —<br/>custom art for every scene they imagined
+          </h2>
+          <div class="space-y-5 mb-8">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-lime flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-5 h-5 text-navy" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-bold text-navy text-base">Uniquely theirs</p>
+                <p class="text-gray-500 text-sm mt-0.5">Our internal software creates each illustration from your child's exact scenes — no stock art, no templates, no two books alike.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-teal flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-bold text-navy text-base">Multiple art styles</p>
+                <p class="text-gray-500 text-sm mt-0.5">Watercolor, pencil sketch, bold cartoon — choose the look that fits your child's story.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-sunshine flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-5 h-5 text-navy" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-bold text-navy text-base">Print-ready PDF</p>
+                <p class="text-gray-500 text-sm mt-0.5">A professionally published hardcover, printed and delivered to your door.</p>
+              </div>
+            </div>
+          </div>
+          <a href="#upload"
+             class="inline-flex items-center gap-2 bg-navy text-white font-bold px-7 py-3.5 rounded-full hover:bg-navy-dark transition-colors text-sm">
+            Start Creating →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── STATS ───────────────────────── -->
+  <section id="pricing" class="bg-blue-tint py-16 lg:py-20">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-3xl lg:text-4xl font-extrabold text-navy text-center mb-3">
+        Bedtime stories, reimagined
+      </h2>
+      <p class="text-center text-gray-500 text-lg mb-12 max-w-2xl mx-auto">
+        Make bedtime more personal, more connected, and more meaningful — with a story your child created themselves and you read together.
+      </p>
+      <div class="grid md:grid-cols-3 gap-10 text-center">
+        <div>
+          <p class="text-5xl sm:text-6xl font-extrabold text-navy mb-2">2–3</p>
+          <p class="text-gray-500 text-lg leading-snug">minutes of audio is all it takes to create a full book</p>
+        </div>
+        <div>
+          <p class="text-5xl sm:text-6xl font-extrabold text-navy mb-2">~25</p>
+          <p class="text-gray-500 text-lg leading-snug">illustrated pages per story, ready in minutes</p>
+        </div>
+        <div>
+          <p class="text-5xl sm:text-6xl font-extrabold text-navy mb-2">∞</p>
+          <p class="text-gray-500 text-lg leading-snug">stories to tell — every recording is a new adventure</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── EMAIL CAPTURE ───────────────────────── -->
+  <section class="bg-off-white py-12 lg:py-20">
+    <div class="max-w-5xl mx-auto px-6 md:flex md:items-start md:gap-16">
+      <!-- Left: copy -->
+      <div class="md:w-1/2 mb-10 md:mb-0">
+        <h2 class="text-3xl lg:text-4xl font-extrabold text-navy mb-4 leading-tight">
+          Be the first to know<br/>when we launch
+        </h2>
+        <p class="text-gray-500 text-lg leading-relaxed">
+          Babbel Books is in early access. Sign up and we'll notify you as soon as the doors open — plus get a free first book on us. Give your child the gift of seeing their own imagination come to life.
+        </p>
+      </div>
+
+      <!-- Right: form -->
+      <div class="md:w-1/2">
+        <form id="signup-form" onsubmit="handleSignup(event)" class="space-y-4">
+          <div>
+            <label for="parent-name" class="block text-sm font-semibold text-navy mb-1.5">Your name</label>
+            <input id="parent-name" type="text" placeholder="Jane Smith"
+                   class="w-full border border-gray-200 rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-navy/30 focus:border-navy transition" />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-semibold text-navy mb-1.5">Email address</label>
+            <input id="email" type="email" placeholder="jane@example.com" required
+                   class="w-full border border-gray-200 rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-navy/30 focus:border-navy transition" />
+          </div>
+          <div>
+            <label for="child-age" class="block text-sm font-semibold text-navy mb-1.5">Child's age <span class="text-gray-400 font-normal">(optional)</span></label>
+            <select id="child-age"
+                    class="w-full border border-gray-200 rounded-xl px-4 py-3 text-base text-gray-500 focus:outline-none focus:ring-2 focus:ring-navy/30 focus:border-navy transition bg-white">
+              <option value="" selected>Select an age range</option>
+              <option value="2-3">2 – 3 years</option>
+              <option value="4-5">4 – 5 years</option>
+              <option value="6-7">6 – 7 years</option>
+              <option value="8-10">8 – 10 years</option>
+            </select>
+          </div>
+          <button type="submit"
+                  class="w-full bg-navy text-white font-bold py-3.5 rounded-full hover:bg-navy-dark transition-colors text-base mt-2">
+            Notify Me — It's Free
+          </button>
+          <p id="signup-success" class="text-teal font-semibold text-sm text-center hidden">
+            ✓ You're on the list! We'll be in touch soon.
+          </p>
+          <p class="text-gray-400 text-xs text-center">No spam, ever. Unsubscribe any time.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── FOOTER ───────────────────────── -->
+  <footer class="bg-navy text-white">
+    <div class="max-w-6xl mx-auto px-6 py-12 lg:py-16">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+        <!-- Brand -->
+        <div class="col-span-2 md:col-span-1">
+          <p class="text-2xl font-extrabold mb-3">Babbel<span class="text-teal">Books</span></p>
+          <p class="text-blue-200 text-sm leading-relaxed max-w-xs">
+            Empowering young authors and artists — one bedtime story at a time.
+          </p>
+        </div>
+
+        <!-- Product -->
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-widest text-blue-200 mb-4">Product</h4>
+          <ul class="space-y-2 text-sm text-blue-100">
+            <li><a href="#how-it-works" class="hover:text-white transition-colors">How It Works</a></li>
+            <li><a href="#age-guide"     class="hover:text-white transition-colors">Age Guide</a></li>
+            <li><a href="samples.html"       class="hover:text-white transition-colors">Sample Books</a></li>
+            <li><a href="pricing.html"       class="hover:text-white transition-colors">Pricing</a></li>
+          </ul>
+        </div>
+
+        <!-- Company -->
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-widest text-blue-200 mb-4">Company</h4>
+          <ul class="space-y-2 text-sm text-blue-100">
+            <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div>
+          <h4 class="font-bold text-sm uppercase tracking-widest text-blue-200 mb-4">Legal</h4>
+          <ul class="space-y-2 text-sm text-blue-100">
+            <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-blue-300 text-sm">© 2026 Babbel Books. All rights reserved.</p>
+        <div class="flex items-center gap-4">
+          <!-- Social icons (placeholder) -->
+          <a href="https://www.instagram.com/babbelbooks" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="X / Twitter" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.845L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="TikTok" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.73a4.85 4.85 0 01-1.01-.04z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ───────────────────────── JS ───────────────────────── -->
+  <script>
+    // ── Cascade text color cycling ───────────────────────────
+    (function() {
+      var palette = ['#FEDB00', '#60CBC2', '#B85BBF', '#FF9955', '#BBDC00', '#60CBC2', '#FEDB00'];
+      var lines = document.querySelectorAll('.cascade-line');
+      var phase = 0;
+      // Start cycling after cascade-in finishes
+      setTimeout(function() {
+        setInterval(function() {
+          lines.forEach(function(el, i) {
+            el.style.color = palette[(phase + i) % palette.length];
+          });
+          phase = (phase + 1) % palette.length;
+        }, 900);
+      }, 1600);
+    })();
+
+    // ── Autoplay videos when they enter the viewport ────────
+    // Needed on mobile where browsers suspend off-screen autoplay
+    (function() {
+      const videos = ['hero-video', 'feature-video', 'feature-video-2'];
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          const v = entry.target;
+          if (entry.isIntersecting) {
+            v.play().catch(function() {});
+          } else {
+            v.pause();
+          }
+        });
+      }, { threshold: 0.25 });
+
+      videos.forEach(function(id) {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    })();
+
+    // ── Mobile nav ──────────────────────────────────────────
+    function toggleMobileNav() {
+      document.getElementById('mobile-nav').classList.toggle('hidden');
+    }
+    function closeMobileNav() {
+      document.getElementById('mobile-nav').classList.add('hidden');
+    }
+    // Close mobile nav when clicking a nav link or scrolling
+    window.addEventListener('scroll', function() {
+      document.getElementById('mobile-nav').classList.add('hidden');
+    }, { passive: true });
+
+    // ── Video mute toggle ───────────────────────────────────
+    function toggleMute() {
+      const video = document.getElementById('hero-video');
+      const iconMuted = document.getElementById('icon-muted');
+      const iconSound = document.getElementById('icon-sound');
+      const label = document.getElementById('mute-label');
+      video.muted = !video.muted;
+      iconMuted.classList.toggle('hidden', !video.muted);
+      iconSound.classList.toggle('hidden', video.muted);
+      label.textContent = video.muted ? 'Unmute' : 'Mute';
+    }
+
+    function toggleFeatureMute2() {
+      const video = document.getElementById('feature-video-2');
+      const iconMuted = document.getElementById('feature-icon-muted-2');
+      const iconSound = document.getElementById('feature-icon-sound-2');
+      const label = document.getElementById('feature-mute-label-2');
+      video.muted = !video.muted;
+      iconMuted.classList.toggle('hidden', !video.muted);
+      iconSound.classList.toggle('hidden', video.muted);
+      label.textContent = video.muted ? 'Unmute' : 'Mute';
+    }
+
+    function toggleFeatureMute() {
+      const video = document.getElementById('feature-video');
+      const iconMuted = document.getElementById('feature-icon-muted');
+      const iconSound = document.getElementById('feature-icon-sound');
+      const label = document.getElementById('feature-mute-label');
+      video.muted = !video.muted;
+      iconMuted.classList.toggle('hidden', !video.muted);
+      iconSound.classList.toggle('hidden', video.muted);
+      label.textContent = video.muted ? 'Unmute' : 'Mute';
+    }
+
+    // ── Drag-and-drop handlers ──────────────────────────────
+    function handleDragOver(e) {
+      e.preventDefault();
+      document.getElementById('drop-zone').classList.add('drag-over');
+    }
+
+    function handleDragLeave(e) {
+      document.getElementById('drop-zone').classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      document.getElementById('drop-zone').classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file) setFile(file);
+    }
+
+    function handleFileSelect(e) {
+      const file = e.target.files[0];
+      if (file) setFile(file);
+    }
+
+    // Selected gender value — managed by selectGender()
+    let _selectedGender = 'neutral';
+
+    function setFile(file) {
+      const status = document.getElementById('file-status');
+
+      if (!file.type.startsWith('audio/')) {
+        status.textContent = '⚠️ Please upload an audio file';
+        return;
+      }
+
+      const size = (file.size / (1024 * 1024)).toFixed(1);
+      status.textContent = `✓ ${file.name} (${size} MB)`;
+
+      // Reveal the child profile form
+      const profileForm = document.getElementById('profile-form');
+      profileForm.classList.remove('hidden');
+      profileForm.classList.add('animate-fade-in');
+
+      // Focus the first field
+      setTimeout(() => document.getElementById('child-name').focus(), 100);
+
+      updateCreateBtn();
+    }
+
+    function updateCreateBtn() {
+      const name = (document.getElementById('child-name')?.value || '').trim();
+      const age  = document.getElementById('child-age-input')?.value;
+      const fileOk = document.getElementById('file-status')?.textContent.startsWith('✓');
+      document.getElementById('create-btn').disabled = !(fileOk && name && age);
+    }
+
+    function selectGender(gender) {
+      _selectedGender = gender;
+      document.querySelectorAll('.gender-btn').forEach(btn => {
+        const isSelected = btn.dataset.gender === gender;
+        btn.style.background = isSelected ? 'rgba(96,203,194,0.25)' : '';
+        btn.style.borderColor = isSelected ? '#60CBC2' : '';
+        btn.style.color = isSelected ? '#60CBC2' : '';
+      });
+    }
+
+    function getChildProfile() {
+      const name    = (document.getElementById('child-name')?.value || '').trim();
+      const age     = parseInt(document.getElementById('child-age-input')?.value || '0', 10);
+      const friends = (document.getElementById('child-friends')?.value || '')
+                        .split(',').map(s => s.trim()).filter(Boolean);
+      const toys    = (document.getElementById('child-toys')?.value || '')
+                        .split(',').map(s => s.trim()).filter(Boolean);
+      return { name, age, gender: _selectedGender, friends, toys };
+    }
+
+    // ── Create button ───────────────────────────────────────
+    async function handleCreate() {
+      const profile = getChildProfile();
+      const fileInput = document.getElementById('audio-input');
+      const file = fileInput?.files[0];
+
+      if (!file) { alert('Please upload an audio file first.'); return; }
+      if (!profile.name) { alert('Please enter your child\'s name.'); return; }
+      if (!profile.age)  { alert('Please enter your child\'s age.'); return; }
+
+      const btn = document.getElementById('create-btn');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      try {
+        const formData = new FormData();
+        formData.append('audio', file);
+        formData.append('profile', JSON.stringify(profile));
+
+        const res = await fetch('http://localhost:5001/process', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error || `Server error ${res.status}`);
+        }
+
+        const data = await res.json();
+        alert(`Book creation started!\n\nJob ID: ${data.job_id}\nYour pipeline is running. Check back soon for your book.`);
+      } catch (err) {
+        alert(`Could not start book creation:\n${err.message}\n\nMake sure the server is running: python server.py`);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Create My Book';
+        updateCreateBtn();
+      }
+    }
+
+    // ── Email signup ────────────────────────────────────────
+    async function handleSignup(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      const name = document.getElementById('parent-name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const childAge = document.getElementById('child-age').value;
+      if (!email) return;
+
+      btn.disabled = true;
+      btn.textContent = 'Saving…';
+
+      try {
+        const res = await fetch('http://localhost:5001/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, child_age: childAge })
+        });
+        if (!res.ok) throw new Error('Server error');
+        document.getElementById('signup-form').reset();
+        document.getElementById('signup-success').classList.remove('hidden');
+      } catch (err) {
+        alert('Could not save your signup. Make sure the server is running:\n  python server.py');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Notify Me — It's Free";
+      }
+    }
+  </script>
+</body>
+</html>

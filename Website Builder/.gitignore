@@ -1,0 +1,16 @@
+# Logs
+server.log
+*.log
+
+# Temp / build artifacts
+assets-*.zip
+
+# Internal / dev files
+SKILL.md
+
+# macOS
+.DS_Store
+
+# Vercel
+.vercel
+.env*.local
