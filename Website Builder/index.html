@@ -86,6 +86,38 @@
     /* Smooth file status transition */
     #file-status { transition: opacity 0.3s; }
 
+    /* ── Preview section ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .preview-spinner { animation: spin 1s linear infinite; }
+
+    .preview-page {
+      position: relative;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .preview-page img {
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+    .preview-watermark {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: rgba(255,255,255,0.20);
+      letter-spacing: 0.18em;
+      pointer-events: none;
+      user-select: none;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      transform: rotate(-28deg);
+    }
+
+    /* Age select: keep caret visible on dark bg */
+    #child-age-select option { background-color: #1B2D6B; color: white; }
+
     /* ── Mobile nav menu ── */
     #mobile-nav a { transition: color 0.15s; }
 
@@ -247,111 +279,163 @@
 
         <!-- Upload zone -->
         <div id="upload">
-          <div id="drop-zone"
-               class="bg-white/5 rounded-2xl p-8 cursor-pointer text-center"
-               onclick="document.getElementById('audio-input').click()"
-               ondragover="handleDragOver(event)"
-               ondragleave="handleDragLeave(event)"
-               ondrop="handleDrop(event)">
-            <input type="file" id="audio-input" accept="audio/*" class="hidden" onchange="handleFileSelect(event)" />
-            <div class="flex flex-col items-center gap-3">
-              <div class="w-16 h-16 rounded-full bg-teal/20 flex items-center justify-center">
-                <!-- Waveform / mic icon -->
-                <svg class="w-8 h-8 text-teal" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
-                </svg>
+
+          <!-- Two-column: drop zone (left) + child profile fields (right) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-stretch">
+
+            <!-- LEFT: Drag-and-drop zone -->
+            <div id="drop-zone"
+                 class="bg-white/5 rounded-2xl p-6 cursor-pointer text-center flex flex-col items-center justify-center"
+                 style="min-height: 220px;"
+                 onclick="document.getElementById('audio-input').click()"
+                 ondragover="handleDragOver(event)"
+                 ondragleave="handleDragLeave(event)"
+                 ondrop="handleDrop(event)">
+              <input type="file" id="audio-input" accept="audio/*" class="hidden" onchange="handleFileSelect(event)" />
+              <div class="flex flex-col items-center gap-3">
+                <div class="w-14 h-14 rounded-full bg-teal/20 flex items-center justify-center">
+                  <svg class="w-7 h-7 text-teal" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                  </svg>
+                </div>
+                <p id="file-status" class="text-white font-semibold text-base">
+                  Tap or drop your audio file
+                </p>
+                <p class="text-blue-200 text-xs">MP3, M4A, WAV, AAC accepted</p>
+                <p class="text-blue-300 text-xs mt-0.5">Ideal length: 2 – 3 minutes</p>
               </div>
-              <p id="file-status" class="text-white font-semibold text-lg">
-                Tap or drop your audio file
-              </p>
-              <p class="text-blue-200 text-sm">MP3, M4A, WAV, AAC accepted</p>
-              <p class="text-blue-300 text-xs mt-1">Ideal length: 2 – 3 minutes</p>
             </div>
-          </div>
 
-          <!-- ── Child Profile Form (shown after audio is selected) ── -->
-          <div id="profile-form" class="hidden mt-6 bg-white/8 backdrop-blur-sm rounded-2xl p-6 border border-white/10 space-y-4">
-            <p class="text-teal text-xs font-semibold uppercase tracking-widest mb-1">Tell us about your child</p>
+            <!-- RIGHT: Child profile fields (always visible) -->
+            <div id="profile-form" class="bg-white/8 backdrop-blur-sm rounded-2xl p-5 border border-white/10 space-y-3">
+              <p class="text-teal text-xs font-semibold uppercase tracking-widest">About your child</p>
 
-            <!-- Row 1: Name + Age -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <!-- Child's first name -->
               <div>
-                <label for="child-name" class="block text-blue-200 text-xs font-semibold mb-1.5">
-                  What's your child's name? <span class="text-teal">*</span>
+                <label for="child-name" class="block text-blue-200 text-xs font-semibold mb-1">
+                  First name <span class="text-teal">*</span>
                 </label>
                 <input id="child-name" type="text" placeholder="e.g. Mia"
                        oninput="updateCreateBtn()"
-                       class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2.5 text-white text-sm placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-teal/50 focus:border-teal/50 transition" />
+                       class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-white text-sm placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-teal/50 focus:border-teal/50 transition" />
               </div>
+
+              <!-- Age dropdown (0–10) -->
               <div>
-                <label for="child-age-input" class="block text-blue-200 text-xs font-semibold mb-1.5">
-                  How old are they? <span class="text-teal">*</span>
+                <label for="child-age-select" class="block text-blue-200 text-xs font-semibold mb-1">
+                  Age <span class="text-teal">*</span>
                 </label>
-                <input id="child-age-input" type="number" min="0" max="12" placeholder="e.g. 4"
-                       oninput="updateCreateBtn()"
-                       class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2.5 text-white text-sm placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-teal/50 focus:border-teal/50 transition" />
+                <select id="child-age-select" onchange="updateCreateBtn()"
+                        class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-teal/50 focus:border-teal/50 transition">
+                  <option value="">Select age…</option>
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+              </div>
+
+              <!-- Friends, stuffed animals & toys (combined) -->
+              <div>
+                <label for="child-friends" class="block text-blue-200 text-xs font-semibold mb-1">
+                  Friends, stuffed animals &amp; toys
+                  <span class="text-blue-400 font-normal ml-1">optional</span>
+                </label>
+                <input id="child-friends" type="text" placeholder="e.g. Leo, Bunny, Mr Bear"
+                       class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-white text-sm placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-teal/50 focus:border-teal/50 transition" />
+                <p class="text-blue-400 text-xs mt-1">Real friends, plushies, stuffed animals — separate with commas</p>
+              </div>
+
+              <!-- Gender -->
+              <div>
+                <label class="block text-blue-200 text-xs font-semibold mb-1.5">Are they a…</label>
+                <div class="flex gap-2 flex-wrap">
+                  <button type="button" data-gender="girl"
+                          onclick="selectGender('girl')"
+                          class="gender-btn px-3 py-1.5 rounded-full text-xs font-semibold border border-white/20 text-blue-200 hover:bg-white/10 transition">
+                    Girl
+                  </button>
+                  <button type="button" data-gender="boy"
+                          onclick="selectGender('boy')"
+                          class="gender-btn px-3 py-1.5 rounded-full text-xs font-semibold border border-white/20 text-blue-200 hover:bg-white/10 transition">
+                    Boy
+                  </button>
+                  <button type="button" data-gender="neutral"
+                          onclick="selectGender('neutral')"
+                          class="gender-btn px-3 py-1.5 rounded-full text-xs font-semibold border border-white/20 text-blue-200 hover:bg-white/10 transition">
+                    Prefer not to say
+                  </button>
+                </div>
               </div>
             </div>
+          </div><!-- /grid -->
 
-            <!-- Row 2: Gender -->
-            <div>
-              <label class="block text-blue-200 text-xs font-semibold mb-2">Are they a...</label>
-              <div class="flex gap-2 flex-wrap">
-                <button type="button" data-gender="girl"
-                        onclick="selectGender('girl')"
-                        class="gender-btn px-4 py-2 rounded-full text-sm font-semibold border border-white/20 text-blue-200 hover:bg-white/10 transition">
-                  Girl
-                </button>
-                <button type="button" data-gender="boy"
-                        onclick="selectGender('boy')"
-                        class="gender-btn px-4 py-2 rounded-full text-sm font-semibold border border-white/20 text-blue-200 hover:bg-white/10 transition">
-                  Boy
-                </button>
-                <button type="button" data-gender="neutral"
-                        onclick="selectGender('neutral')"
-                        class="gender-btn px-4 py-2 rounded-full text-sm font-semibold border border-white/20 text-blue-200 hover:bg-white/10 transition">
-                  Prefer not to say
-                </button>
-              </div>
-            </div>
-
-            <!-- Row 3: Friends -->
-            <div>
-              <label for="child-friends" class="block text-blue-200 text-xs font-semibold mb-1.5">
-                Any favourite friends we should include?
-                <span class="text-blue-400 font-normal ml-1">optional</span>
-              </label>
-              <input id="child-friends" type="text" placeholder="e.g. Leo, Sofia, Maya"
-                     class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2.5 text-white text-sm placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-teal/50 focus:border-teal/50 transition" />
-              <p class="text-blue-400 text-xs mt-1">Separate names with commas</p>
-            </div>
-
-            <!-- Row 4: Toys / stuffies -->
-            <div>
-              <label for="child-toys" class="block text-blue-200 text-xs font-semibold mb-1.5">
-                Any favourite toys or stuffies to include?
-                <span class="text-blue-400 font-normal ml-1">optional</span>
-              </label>
-              <input id="child-toys" type="text" placeholder="e.g. Bunny, Robo, Mr Bear"
-                     class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2.5 text-white text-sm placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-teal/50 focus:border-teal/50 transition" />
-              <p class="text-blue-400 text-xs mt-1">Separate names with commas</p>
-            </div>
-          </div>
-
-          <div class="mt-5 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+          <!-- Preview My Book button -->
+          <div class="mt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
             <button id="create-btn" onclick="handleCreate()"
                     class="w-full sm:w-auto flex items-center justify-center gap-2 bg-sunshine text-navy text-base font-bold px-8 py-3.5 rounded-full hover:brightness-95 transition disabled:opacity-40 disabled:cursor-not-allowed"
                     disabled>
               <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
               </svg>
-              Create My Book
+              Preview My Book
             </button>
             <a href="#how-it-works" class="text-blue-200 text-sm font-semibold hover:text-white transition-colors underline underline-offset-4">
               See how it works ↓
             </a>
           </div>
+
+          <!-- ── Book Preview Section (shown after generation) ── -->
+          <div id="preview-section" class="hidden mt-5 bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
+
+            <!-- Header -->
+            <div class="px-5 pt-5 pb-4 border-b border-white/10">
+              <p class="text-teal text-xs font-semibold uppercase tracking-widest mb-0.5">Book Preview</p>
+              <p class="text-white font-bold text-lg leading-snug">Here's a peek at your book</p>
+              <p class="text-blue-300 text-sm">First page · a few from the middle · final page</p>
+            </div>
+
+            <!-- Loading state -->
+            <div id="preview-loading" class="p-8 text-center">
+              <div class="preview-spinner w-10 h-10 border-2 border-teal/30 border-t-teal rounded-full mx-auto mb-4"></div>
+              <p class="text-white font-semibold mb-1">Creating your book…</p>
+              <p class="text-blue-300 text-sm">Transcribing, writing the story, and illustrating every page.</p>
+              <p class="text-blue-400 text-xs mt-2">This usually takes 3–5 minutes</p>
+            </div>
+
+            <!-- Pages grid (shown when preview is ready) -->
+            <div id="preview-pages" class="hidden p-5">
+              <div id="preview-grid" class="grid grid-cols-3 gap-3 mb-4"
+                   oncontextmenu="return false">
+                <!-- Page images inserted by JS -->
+              </div>
+              <p class="text-blue-400 text-xs text-center italic mb-5">
+                Preview only — watermarked. Your printed book will have crisp, full-resolution illustrations.
+              </p>
+              <a href="pricing.html"
+                 class="w-full flex items-center justify-center gap-2 bg-sunshine text-navy font-bold px-6 py-3.5 rounded-full hover:brightness-95 transition text-base">
+                Purchase &amp; Print My Book →
+              </a>
+            </div>
+
+            <!-- Error state -->
+            <div id="preview-error" class="hidden p-5 text-center">
+              <p class="text-white font-semibold mb-2">Something went wrong</p>
+              <p class="text-blue-300 text-sm mb-4" id="preview-error-msg">Could not generate your preview. Please try again.</p>
+              <button onclick="resetPreview()" class="text-teal text-sm font-semibold underline hover:text-white transition-colors">Try again</button>
+            </div>
+
+          </div><!-- /preview-section -->
+
         </div>
       </div>
 
@@ -1036,6 +1120,13 @@
       label.textContent = video.muted ? 'Unmute' : 'Mute';
     }
 
+    // ── Backend URL ────────────────────────────────────────
+    // Change this to your Render URL once deployed, e.g.:
+    //   const API_BASE = 'https://babbel-books-api.onrender.com';
+    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:5001'
+      : 'https://babbel-books-api.onrender.com';
+
     // ── Drag-and-drop handlers ──────────────────────────────
     function handleDragOver(e) {
       e.preventDefault();
@@ -1072,20 +1163,15 @@
       const size = (file.size / (1024 * 1024)).toFixed(1);
       status.textContent = `✓ ${file.name} (${size} MB)`;
 
-      // Reveal the child profile form
-      const profileForm = document.getElementById('profile-form');
-      profileForm.classList.remove('hidden');
-      profileForm.classList.add('animate-fade-in');
-
-      // Focus the first field
+      // Focus the name field after file is selected
       setTimeout(() => document.getElementById('child-name').focus(), 100);
 
       updateCreateBtn();
     }
 
     function updateCreateBtn() {
-      const name = (document.getElementById('child-name')?.value || '').trim();
-      const age  = document.getElementById('child-age-input')?.value;
+      const name   = (document.getElementById('child-name')?.value || '').trim();
+      const age    = document.getElementById('child-age-select')?.value;
       const fileOk = document.getElementById('file-status')?.textContent.startsWith('✓');
       document.getElementById('create-btn').disabled = !(fileOk && name && age);
     }
@@ -1101,35 +1187,102 @@
     }
 
     function getChildProfile() {
-      const name    = (document.getElementById('child-name')?.value || '').trim();
-      const age     = parseInt(document.getElementById('child-age-input')?.value || '0', 10);
-      const friends = (document.getElementById('child-friends')?.value || '')
-                        .split(',').map(s => s.trim()).filter(Boolean);
-      const toys    = (document.getElementById('child-toys')?.value || '')
-                        .split(',').map(s => s.trim()).filter(Boolean);
-      return { name, age, gender: _selectedGender, friends, toys };
+      const name       = (document.getElementById('child-name')?.value || '').trim();
+      const age        = parseInt(document.getElementById('child-age-select')?.value || '0', 10);
+      const companions = (document.getElementById('child-friends')?.value || '')
+                          .split(',').map(s => s.trim()).filter(Boolean);
+      return { name, age, gender: _selectedGender, companions };
     }
 
-    // ── Create button ───────────────────────────────────────
+    // ── Preview helpers ─────────────────────────────────────
+    function resetPreview() {
+      document.getElementById('preview-loading').classList.remove('hidden');
+      document.getElementById('preview-pages').classList.add('hidden');
+      document.getElementById('preview-error').classList.add('hidden');
+      document.getElementById('preview-grid').innerHTML = '';
+    }
+
+    function showPreviewImages(images) {
+      const grid = document.getElementById('preview-grid');
+      grid.innerHTML = '';
+      const labels = ['First Page', ...images.slice(1, -1).map((_, i) => `Page ${i + 2}`), 'Final Page'];
+      images.forEach(function(src, i) {
+        const label = images.length === 1 ? 'Page 1' : (labels[i] || `Page ${i + 1}`);
+        const wrapper = document.createElement('div');
+        wrapper.className = 'preview-page';
+        wrapper.innerHTML =
+          '<img src="' + src + '" alt="' + label + '" class="w-full rounded-xl object-cover" style="aspect-ratio:3/4;" draggable="false" />' +
+          '<div class="preview-watermark">PREVIEW</div>' +
+          '<p class="text-blue-300 text-xs text-center mt-1.5 font-semibold">' + label + '</p>';
+        grid.appendChild(wrapper);
+      });
+      document.getElementById('preview-loading').classList.add('hidden');
+      document.getElementById('preview-pages').classList.remove('hidden');
+    }
+
+    async function pollForPreview(jobId) {
+      const maxAttempts = 72; // ~6 min at 5s intervals
+      let attempts = 0;
+
+      const check = async () => {
+        attempts++;
+        if (attempts > maxAttempts) {
+          document.getElementById('preview-loading').classList.add('hidden');
+          document.getElementById('preview-error').classList.remove('hidden');
+          document.getElementById('preview-error-msg').textContent =
+            'Preview generation timed out. Please try again.';
+          return;
+        }
+        try {
+          const res = await fetch(API_BASE + '/preview-status?job_id=' + jobId);
+          if (!res.ok) throw new Error('Status check failed');
+          const data = await res.json();
+          if (data.status === 'complete' && data.preview_images) {
+            showPreviewImages(data.preview_images);
+          } else if (data.status === 'error') {
+            throw new Error(data.error || 'Preview generation failed');
+          } else {
+            setTimeout(check, 5000);
+          }
+        } catch (err) {
+          document.getElementById('preview-loading').classList.add('hidden');
+          document.getElementById('preview-error').classList.remove('hidden');
+          document.getElementById('preview-error-msg').textContent = err.message;
+        }
+      };
+
+      setTimeout(check, 5000);
+    }
+
+    // ── Preview / Create button ─────────────────────────────
     async function handleCreate() {
       const profile = getChildProfile();
       const fileInput = document.getElementById('audio-input');
       const file = fileInput?.files[0];
 
-      if (!file) { alert('Please upload an audio file first.'); return; }
+      if (!file)         { alert('Please upload an audio file first.'); return; }
       if (!profile.name) { alert('Please enter your child\'s name.'); return; }
-      if (!profile.age)  { alert('Please enter your child\'s age.'); return; }
+      if (!profile.age && profile.age !== 0) { alert('Please select your child\'s age.'); return; }
 
       const btn = document.getElementById('create-btn');
       btn.disabled = true;
-      btn.textContent = 'Sending…';
+      btn.innerHTML =
+        '<svg class="w-5 h-5 preview-spinner" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>' +
+        ' Generating Preview…';
+
+      // Show preview section in loading state, scroll into view
+      resetPreview();
+      const previewSection = document.getElementById('preview-section');
+      previewSection.classList.remove('hidden');
+      previewSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
       try {
         const formData = new FormData();
         formData.append('audio', file);
         formData.append('profile', JSON.stringify(profile));
 
-        const res = await fetch('http://localhost:5001/process', {
+        const res = await fetch(API_BASE + '/process', {
           method: 'POST',
           body: formData,
         });
@@ -1140,12 +1293,27 @@
         }
 
         const data = await res.json();
-        alert(`Book creation started!\n\nJob ID: ${data.job_id}\nYour pipeline is running. Check back soon for your book.`);
+
+        if (data.preview_images && data.preview_images.length > 0) {
+          // Server returned images immediately
+          showPreviewImages(data.preview_images);
+        } else if (data.job_id) {
+          // Job is running — poll for completion
+          pollForPreview(data.job_id);
+        } else {
+          throw new Error('No preview data received. Make sure the server supports preview generation.');
+        }
       } catch (err) {
-        alert(`Could not start book creation:\n${err.message}\n\nMake sure the server is running: python server.py`);
+        document.getElementById('preview-loading').classList.add('hidden');
+        document.getElementById('preview-error').classList.remove('hidden');
+        document.getElementById('preview-error-msg').textContent = err.message;
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Create My Book';
+        btn.innerHTML =
+          '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">' +
+          '<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>' +
+          '<path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>' +
+          ' Preview My Book';
         updateCreateBtn();
       }
     }
@@ -1163,7 +1331,7 @@
       btn.textContent = 'Saving…';
 
       try {
-        const res = await fetch('http://localhost:5001/signup', {
+        const res = await fetch(API_BASE + '/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, child_age: childAge })
